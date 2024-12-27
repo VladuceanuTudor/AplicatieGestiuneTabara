@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System;
 
 namespace TabaraDeVaraApp.ViewModels
 {
@@ -107,6 +108,7 @@ namespace TabaraDeVaraApp.ViewModels
 
         private void LoadActivitatiForSelectedCopil()
         {
+            
             if (SelectedCopil != null)
             {
                 using (var db = new DataClasses1DataContext())
@@ -125,12 +127,17 @@ namespace TabaraDeVaraApp.ViewModels
                     var activitateViewModels = activitati.Select(a => new ActivitateViewModel(a)
                     ).ToList();
 
+                    
                     for (int i=0; i < activitateViewModels.Count; i++)
                     {
                         if(Prezenta[i])
-                            activitateViewModels[i].Prezenta = "Prezent";
+                            activitateViewModels[i].Prezenta = "Prezent.";
                         else
-                            activitateViewModels[i].Prezenta = "Absent";
+                            activitateViewModels[i].Prezenta = "Absent.";
+                        if (activitateViewModels[i].Data > DateTime.Now)
+                        {
+                            activitateViewModels[i].Prezenta = "Activitate viitoare.";
+                        }
                     }
 
                     // Set the ObservableCollection to the ViewModel list

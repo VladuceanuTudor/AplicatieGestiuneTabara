@@ -1,0 +1,75 @@
+﻿<Window x:Class="TabaraDeVaraApp.Views.ParinteWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Parent View" Height="700" Width="1100" ResizeMode="CanResize">
+
+    <Window.Resources>
+        <!-- Style for the ListBox -->
+        <Style x:Key="ListBoxStyle" TargetType="ListBox">
+            <Setter Property="Background" Value="#F9F9F9"/>
+            <Setter Property="BorderBrush" Value="#DCDCDC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <!-- Style for TextBlock inside ListBox -->
+        <Style x:Key="TextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="#333"/>
+        </Style>
+
+        <!-- Style for DataTemplate TextBlocks -->
+        <Style x:Key="DataTemplateTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#777"/>
+        </Style>
+
+        <!-- Style for header TextBlocks -->
+        <Style x:Key="HeaderTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#4CAF50"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="#F0F0F0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Panel: List of Children -->
+        <StackPanel Grid.Column="0" Margin="10">
+            <TextBlock Text="Copii:" Style="{StaticResource HeaderTextBlockStyle}" Margin="0,0,0,10"/>
+            <ListBox ItemsSource="{Binding Copii}" SelectedItem="{Binding SelectedCopil}" DisplayMemberPath="Prenume"
+                     Style="{StaticResource ListBoxStyle}"/>
+        </StackPanel>
+
+        <!-- Right Panel: List of Activities for Selected Child -->
+        <StackPanel Grid.Column="1" Margin="10">
+            <TextBlock Text="Activități pentru Copil:" Style="{StaticResource HeaderTextBlockStyle}" Margin="0,0,0,10"/>
+            <ListBox ItemsSource="{Binding SelectedCopilActivitati}" Style="{StaticResource ListBoxStyle}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="5">
+                            <TextBlock Text="{Binding Denumire}" FontWeight="Bold" Style="{StaticResource TextBlockStyle}" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding Data}" Style="{StaticResource DataTemplateTextBlockStyle}" />
+                            <TextBlock Text="{Binding Prezenta}" Style="{StaticResource DataTemplateTextBlockStyle}"/>
+
+                            <!-- Expander to show more details -->
+                            <Expander Header="Detalii"  Margin="5,10,0,0">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding EducatorID, StringFormat='Educator: {0}'}" Style="{StaticResource DataTemplateTextBlockStyle}" />
+                                    <TextBlock Text="{Binding Descriere, StringFormat='Descriere: {0}'}" Style="{StaticResource DataTemplateTextBlockStyle}" />
+                                    <TextBlock Text="{Binding Durata, StringFormat='Durata: {0} de minute'}" Style="{StaticResource DataTemplateTextBlockStyle}" />
+                                </StackPanel>
+                            </Expander>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+
+    </Grid>
+</Window>

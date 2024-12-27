@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="TabaraDeVara" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=localhost;Initial Catalog=TabaraDeVara;Integrated Security=True;Encrypt=False;Trust Server Certificate=True" SettingsObjectName="Proiect_ABD.Properties.Settings" SettingsPropertyName="TabaraDeVaraConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Activitate" Member="Activitates">
+    <Type Name="Activitate">
+      <Column Name="ActivitateID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nume" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Descriere" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Data" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Ora" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Column Name="Durata" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EducatorID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Activitate_CopilActivitate" Member="CopilActivitates" ThisKey="ActivitateID" OtherKey="ActivitateID" Type="CopilActivitate" />
+      <Association Name="Educator_Activitate" Member="Educator" ThisKey="EducatorID" OtherKey="EducatorID" Type="Educator" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Copil" Member="Copils">
+    <Type Name="Copil">
+      <Column Name="CopilID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nume" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Prenume" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Varsta" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Parola" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="EducatorID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Copil_CopilActivitate" Member="CopilActivitates" ThisKey="CopilID" OtherKey="CopilID" Type="CopilActivitate" />
+      <Association Name="Copil_CopilParinte" Member="CopilParintes" ThisKey="CopilID" OtherKey="CopilID" Type="CopilParinte" />
+      <Association Name="Educator_Copil" Member="Educator" ThisKey="EducatorID" OtherKey="EducatorID" Type="Educator" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CopilActivitate" Member="CopilActivitates">
+    <Type Name="CopilActivitate">
+      <Column Name="CopilID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ActivitateID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Prezenta" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Activitate_CopilActivitate" Member="Activitate" ThisKey="ActivitateID" OtherKey="ActivitateID" Type="Activitate" IsForeignKey="true" />
+      <Association Name="Copil_CopilActivitate" Member="Copil" ThisKey="CopilID" OtherKey="CopilID" Type="Copil" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CopilParinte" Member="CopilParintes">
+    <Type Name="CopilParinte">
+      <Column Name="CopilID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ParinteID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Copil_CopilParinte" Member="Copil" ThisKey="CopilID" OtherKey="CopilID" Type="Copil" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Parinte_CopilParinte" Member="Parinte" ThisKey="ParinteID" OtherKey="ParinteID" Type="Parinte" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Educator" Member="Educators">
+    <Type Name="Educator">
+      <Column Name="EducatorID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nume" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Prenume" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Parola" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="NumarTel" Type="System.String" DbType="NVarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Educator_Activitate" Member="Activitates" ThisKey="EducatorID" OtherKey="EducatorID" Type="Activitate" />
+      <Association Name="Educator_Copil" Member="Copils" ThisKey="EducatorID" OtherKey="EducatorID" Type="Copil" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Parinte" Member="Parintes">
+    <Type Name="Parinte">
+      <Column Name="ParinteID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nume" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Prenume" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Parola" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="NumarTel" Type="System.String" DbType="NVarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Parinte_CopilParinte" Member="CopilParintes" ThisKey="ParinteID" OtherKey="ParinteID" Type="CopilParinte" />
+    </Type>
+  </Table>
+</Database>

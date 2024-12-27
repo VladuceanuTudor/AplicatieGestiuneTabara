@@ -1,0 +1,12 @@
+﻿<Window x:Class="TabaraDeVaraApp.Views.EducatorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Educator - Tabăra de Vară" Height="300" Width="400">
+    <Grid>
+        <Label Content="Bun venit!" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0"/>
+        <Label Content="{Binding Nume}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label Content="{Binding Prenume}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,40,0,0"/>
+        <Label Content="Email:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,60,0,0"/>
+        <Label Content="{Binding Email}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,80,0,0"/>
+    </Grid>
+</Window>

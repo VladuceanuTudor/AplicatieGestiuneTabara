@@ -1,0 +1,58 @@
+﻿<Window x:Class="TabaraDeVaraApp.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Autentificare Tabăra de Vară" Height="400" Width="500">
+    <Window.Resources>
+        <!-- Define a reusable style for TextBox and PasswordBox -->
+        <Style x:Key="InputStyle" TargetType="Control">
+            <Setter Property="Width" Value="250"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="#6E7F80"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#F4F4F4"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
+
+        <!-- Button Style -->
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#4CAF50"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Margin" Value="0,0,0,50"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <!-- Background Grid -->
+        <Grid Background="#F2F2F2">
+            <!-- Email Label -->
+            <Label Content="Email" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,70,0,0" FontSize="16" FontWeight="Bold" Foreground="#333"/>
+            <!-- Email TextBox -->
+            <TextBox Text="{Binding Email}" HorizontalAlignment="Left" Margin="150,70,0,0" VerticalAlignment="Top" Style="{StaticResource InputStyle}"/>
+
+            <!-- Password Label -->
+            <Label Content="Parolă" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,120,0,0" FontSize="16" FontWeight="Bold" Foreground="#333"/>
+            <!-- Password Box -->
+            <PasswordBox x:Name="PasswordBox"
+                         HorizontalAlignment="Left"
+                         Margin="150,120,0,0"
+                         VerticalAlignment="Top"
+                         Style="{StaticResource InputStyle}"
+                         PasswordChanged="PasswordBox_PasswordChanged"/>
+
+            <!-- Login Button -->
+            <Button Content="Autentificare" Command="{Binding LoginCommand}" Style="{StaticResource ButtonStyle}"/>
+        </Grid>
+    </Grid>
+</Window>

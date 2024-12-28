@@ -252,3 +252,9 @@ select * from Activitate
 INSERT INTO CopilActivitate (CopilID, ActivitateID, Prezenta)
 VALUES
 (1, 1004, 0);
+
+select * from Educator
+
+INSERT INTO Educator (Nume, Prenume, Parola, NumarTel, Email)
+VALUES
+('test', 'test', '1', '1', '1');

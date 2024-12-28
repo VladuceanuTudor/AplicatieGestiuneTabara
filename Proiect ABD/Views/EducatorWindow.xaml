@@ -1,12 +1,160 @@
 ﻿<Window x:Class="TabaraDeVaraApp.Views.EducatorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Educator - Tabăra de Vară" Height="300" Width="400">
-    <Grid>
-        <Label Content="Bun venit!" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0"/>
-        <Label Content="{Binding Nume}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Label Content="{Binding Prenume}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,40,0,0"/>
-        <Label Content="Email:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,60,0,0"/>
-        <Label Content="{Binding Email}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,80,0,0"/>
+        Title="Educator View" Height="600" Width="1000" ResizeMode="CanResize" Background="#f9f9f9">
+    <Window.Resources>
+        <!-- Navbar Button Style -->
+        <Style x:Key="NavbarButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Background" Value="#388E3C"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="BorderBrush" Value="#388E3C"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#4CAF50"/>
+                    <Setter Property="BorderBrush" Value="#4CAF50"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Card Button Style -->
+        <Style x:Key="CardButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Height" Value="150"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Background" Value="#E0F2F1"/>
+            <Setter Property="BorderBrush" Value="#4CAF50"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#B2DFDB"/>
+                    <Setter Property="BorderBrush" Value="#388E3C"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- TabControl Style -->
+        <Style TargetType="TabControl">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#ddd"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <!-- TabItem Style -->
+        <Style TargetType="TabItem">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Background" Value="#388E3C"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#388E3C"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="LightGreen"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="CadetBlue">
+        <!-- Navbar -->
+        
+
+        <!-- Content Area -->
+        <Grid Margin="20" VerticalAlignment="Top">
+            <TabControl Name="MainTabControl">
+                <!-- Copii Tab -->
+                <TabItem Header="Copii">
+                    <StackPanel>
+                        <Button Content="Adaugă Copil" Style="{StaticResource NavbarButtonStyle}" Width="200" Margin="10" HorizontalAlignment="Center"/>
+                        <WrapPanel HorizontalAlignment="Center">
+                            <!-- Copii Cards -->
+                            <Button Style="{StaticResource CardButtonStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Copil 1" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Age: 10" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource CardButtonStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="Copil 2" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Age: 8" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                        </WrapPanel>
+                    </StackPanel>
+                </TabItem>
+
+                <!-- Parinti Tab -->
+                <TabItem Header="Parinti">
+                    <StackPanel>
+                        <Button Content="Adaugă Părinte" Style="{StaticResource NavbarButtonStyle}" Width="200" Margin="10" HorizontalAlignment="Center"/>
+                        <ListBox Margin="10">
+                            <!-- Parent List -->
+                            <ListBoxItem>
+                                <StackPanel>
+                                    <TextBlock Text="Părinte 1" FontWeight="Bold"/>
+                                    <TextBlock Text="Copil: Copil 1"/>
+                                </StackPanel>
+                            </ListBoxItem>
+                            <ListBoxItem>
+                                <StackPanel>
+                                    <TextBlock Text="Părinte 2" FontWeight="Bold"/>
+                                    <TextBlock Text="Copil: Copil 2"/>
+                                </StackPanel>
+                            </ListBoxItem>
+                        </ListBox>
+                    </StackPanel>
+                </TabItem>
+
+                <!-- Activitati Tab -->
+                <TabItem Header="Activitati">
+                    <StackPanel>
+                        <Button Content="Adaugă Activitate" Style="{StaticResource NavbarButtonStyle}" Width="200" Margin="10" HorizontalAlignment="Center"/>
+                        <StackPanel Margin="10">
+                            <TextBlock Text="Activitate 1" FontWeight="Bold"/>
+                            <TextBlock Text="Copii Participanti: Copil 1, Copil 2"/>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+
+                <!-- Educatori Tab -->
+                <TabItem Header="Educatori">
+                    <StackPanel>
+                        <TextBlock Text="Educatori și Activitățile lor" FontSize="18" FontWeight="Bold" Margin="10"/>
+                        <ListBox Margin="10">
+                            <!-- Educator List -->
+                            <ListBoxItem>
+                                <StackPanel>
+                                    <TextBlock Text="Educator 1" FontWeight="Bold"/>
+                                    <TextBlock Text="Activități: Atelier Pictură, Jocuri Interactive"/>
+                                </StackPanel>
+                            </ListBoxItem>
+                            <ListBoxItem>
+                                <StackPanel>
+                                    <TextBlock Text="Educator 2" FontWeight="Bold"/>
+                                    <TextBlock Text="Activități: Excursie Parc"/>
+                                </StackPanel>
+                            </ListBoxItem>
+                        </ListBox>
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
+        </Grid>
     </Grid>
 </Window>

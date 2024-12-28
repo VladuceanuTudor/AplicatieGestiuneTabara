@@ -1,12 +1,46 @@
 ﻿<Window x:Class="TabaraDeVaraApp.Views.CopilWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Copil - Tabăra de Vară" Height="300" Width="400">
-    <Grid>
-        <Label Content="Bun venit!" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0"/>
-        <Label Content="{Binding Nume}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Label Content="{Binding Prenume}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,40,0,0"/>
-        <Label Content="Vârsta:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,60,0,0"/>
-        <Label Content="{Binding Varsta}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,80,0,0"/>
+        Title="Copil View" Height="700" Width="1200" ResizeMode="CanResize" Background="#f9f9f9">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Text="Calendar Activități"
+                   FontSize="32"
+                   FontWeight="Bold"
+                   Foreground="#4CAF50"
+                   Margin="10,0,0,20"
+                   HorizontalAlignment="Left"/>
+
+        <!-- DataGrid with Boxed Style -->
+        <Border Grid.Row="1" Background="White" CornerRadius="10" Padding="15" BorderBrush="#ddd" BorderThickness="1" >
+            <ScrollViewer>
+                <ItemsControl ItemsSource="{Binding SelectedCopilActivitati}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="DarkSeaGreen" CornerRadius="8" Padding="10" Margin="10" BorderBrush="#E2E8F0" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Data}" FontWeight="Bold" Foreground="#333" FontSize="16"/>
+                                    <TextBlock Text="{Binding Denumire}" FontSize="14" Foreground="#444" Margin="0,5,0,0"/>
+                                    <TextBlock Text="{Binding Prezenta}" FontSize="12" Foreground="#555" Margin="0,2,0,0"/>
+                                    <TextBlock Text="{Binding Observatii}" FontSize="12" Foreground="#555" Margin="0,2,0,0"/>
+                                    <TextBlock Text="{Binding Descriere}" FontSize="12" Foreground="#555" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
     </Grid>
+
+    <!-- Resources -->
+    <Window.Resources>
+        <!-- Drop Shadow Effect -->
+        <DropShadowEffect x:Key="DropShadow" BlurRadius="15" ShadowDepth="0" Color="#000000" Opacity="0.2"/>
+    </Window.Resources>
 </Window>

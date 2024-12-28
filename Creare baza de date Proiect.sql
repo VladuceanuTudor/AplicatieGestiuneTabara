@@ -158,3 +158,97 @@ VALUES
 INSERT INTO CopilParinte (CopilID, ParinteID)
 VALUES
 (3, 1);
+
+ALTER TABLE CopilActivitate
+ADD Observatii VARCHAR(255) NULL;
+
+UPDATE CopilActivitate
+SET Observatii = 'Copilul a participat activ la activitate.'
+WHERE CopilID = 1 AND ActivitateID = 1;
+
+UPDATE CopilActivitate
+SET Observatii = 'Copilul nu a fost prezent la activitate.'
+WHERE CopilID = 2 AND ActivitateID = 1;
+
+UPDATE CopilActivitate
+SET Observatii = 'Copilul a participat activ la atelierul de desen.'
+WHERE CopilID = 3 AND ActivitateID = 2;
+
+UPDATE CopilActivitate
+SET Observatii = 'Copilul a participat activ la atelierul de desen.'
+WHERE CopilID = 4 AND ActivitateID = 2;
+
+UPDATE CopilActivitate
+SET Observatii = 'Copilul nu a participat la cursul de gătit.'
+WHERE CopilID = 5 AND ActivitateID = 3;
+
+UPDATE CopilActivitate
+SET Observatii = 'Copilul a participat activ la cursul de gătit.'
+WHERE CopilID = 6 AND ActivitateID = 3;
+
+UPDATE CopilActivitate
+SET Observatii = 'Copilul a participat la excursie.'
+WHERE CopilID = 7 AND ActivitateID = 4;
+
+UPDATE CopilActivitate
+SET Observatii = 'Copilul nu a participat la excursie.'
+WHERE CopilID = 8 AND ActivitateID = 4;
+
+UPDATE CopilActivitate
+SET Observatii = 'Copilul a participat activ la atelierul de teatru.'
+WHERE CopilID = 9 AND ActivitateID = 5;
+
+UPDATE CopilActivitate
+SET Observatii = 'Copilul a participat activ la atelierul de teatru.'
+WHERE CopilID = 10 AND ActivitateID = 5;
+
+UPDATE CopilActivitate
+SET Observatii = 'Copilul nu a fost prezent la activitate.'
+WHERE CopilID = 11 AND ActivitateID = 1;
+
+UPDATE CopilActivitate
+SET Observatii = 'Copilul a participat activ la atelierul de desen.'
+WHERE CopilID = 12 AND ActivitateID = 2;
+
+UPDATE CopilActivitate
+SET Observatii = 'Copilul a participat activ la cursul de gătit.'
+WHERE CopilID = 13 AND ActivitateID = 3;
+
+UPDATE CopilActivitate
+SET Observatii = 'Copilul a participat la excursie.'
+WHERE CopilID = 14 AND ActivitateID = 4;
+
+UPDATE CopilActivitate
+SET Observatii = 'Copilul nu a participat la atelierul de teatru.'
+WHERE CopilID = 15 AND ActivitateID = 5;
+
+UPDATE CopilActivitate
+SET Observatii = 'Copilul a participat activ la activitate.'
+WHERE CopilID = 16 AND ActivitateID = 1;
+
+UPDATE CopilActivitate
+SET Observatii = 'Copilul nu a fost prezent la atelierul de desen.'
+WHERE CopilID = 17 AND ActivitateID = 2;
+
+UPDATE CopilActivitate
+SET Observatii = 'Copilul a participat activ la cursul de gătit.'
+WHERE CopilID = 18 AND ActivitateID = 3;
+
+UPDATE CopilActivitate
+SET Observatii = 'Copilul a participat la excursie.'
+WHERE CopilID = 19 AND ActivitateID = 4;
+
+UPDATE CopilActivitate
+SET Observatii = 'Copilul a participat activ la atelierul de teatru.'
+WHERE CopilID = 20 AND ActivitateID = 5;
+
+
+INSERT INTO Activitate (Nume, Descriere, Data, Ora, Durata, EducatorID)
+VALUES
+('Paintball', 'Activitate competitiva în aer liber', '2025-03-05', '10:45:00', 120, 1);
+
+select * from Activitate
+
+INSERT INTO CopilActivitate (CopilID, ActivitateID, Prezenta)
+VALUES
+(1, 1004, 0);

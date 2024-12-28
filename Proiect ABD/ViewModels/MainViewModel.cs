@@ -76,13 +76,7 @@ namespace TabaraDeVaraApp.ViewModels
 
             var copil = _db.Copils.FirstOrDefault(c => c.Parola == password && _db.Parintes.Any(p => p.Email == email));
             if (copil != null)
-                return new CopilViewModel
-                {
-                    CopilID = copil.CopilID,
-                    Nume = copil.Nume,
-                    Prenume = copil.Prenume,
-                    Varsta = copil.Varsta
-                };
+                return new CopilViewModel(copil);
 
             var educator = _db.Educators.FirstOrDefault(e => e.Email == email && e.Parola == password);
             if (educator != null)

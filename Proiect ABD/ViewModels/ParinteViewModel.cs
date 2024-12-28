@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using System;
 
 namespace TabaraDeVaraApp.ViewModels
@@ -123,6 +122,11 @@ namespace TabaraDeVaraApp.ViewModels
                         .Select (ca => ca.Prezenta)
                         .ToList());
 
+                    var observatii = db.CopilActivitates
+                        .Where(ca => ca.CopilID == SelectedCopil.CopilID)
+                        .Select(ca => ca.Observatii)
+                        .ToList();
+
                     // Map Proiect_ABD.Activitate to ActivitateViewModel
                     var activitateViewModels = activitati.Select(a => new ActivitateViewModel(a)
                     ).ToList();
@@ -130,6 +134,7 @@ namespace TabaraDeVaraApp.ViewModels
                     
                     for (int i=0; i < activitateViewModels.Count; i++)
                     {
+                        activitateViewModels[i].Observatii = observatii[i];
                         if(Prezenta[i])
                             activitateViewModels[i].Prezenta = "Prezent.";
                         else

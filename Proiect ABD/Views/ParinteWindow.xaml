@@ -63,6 +63,7 @@
                                     <TextBlock Text="{Binding EducatorID, StringFormat='Educator: {0}'}" Style="{StaticResource DataTemplateTextBlockStyle}" />
                                     <TextBlock Text="{Binding Descriere, StringFormat='Descriere: {0}'}" Style="{StaticResource DataTemplateTextBlockStyle}" />
                                     <TextBlock Text="{Binding Durata, StringFormat='Durata: {0} de minute'}" Style="{StaticResource DataTemplateTextBlockStyle}" />
+                                    <TextBlock Text="{Binding Observatii, StringFormat='Observatii: {0} '}" Style="{StaticResource DataTemplateTextBlockStyle}" />
                                 </StackPanel>
                             </Expander>
                         </StackPanel>

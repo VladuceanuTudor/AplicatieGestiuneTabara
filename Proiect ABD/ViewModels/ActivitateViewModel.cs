@@ -13,6 +13,7 @@ namespace TabaraDeVaraApp.ViewModels
         private int _educatorID;
         private string _prezenta;
         private string _descriere;
+        private string _observatii;
         private int _durata;
         
 
@@ -54,6 +55,12 @@ namespace TabaraDeVaraApp.ViewModels
         {
             get => _prezenta;
             set { _prezenta = value; OnPropertyChanged(); }
+        }
+
+        public string Observatii
+        {
+            get => _observatii;
+            set { _observatii = value; OnPropertyChanged(); }
         }
         public string Descriere
         {

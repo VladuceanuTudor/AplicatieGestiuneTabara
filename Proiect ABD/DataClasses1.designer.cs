@@ -695,6 +695,8 @@ namespace Proiect_ABD
 		
 		private bool _Prezenta;
 		
+		private string _Observatii;
+		
 		private EntityRef<Activitate> _Activitate;
 		
 		private EntityRef<Copil> _Copil;
@@ -709,6 +711,8 @@ namespace Proiect_ABD
     partial void OnActivitateIDChanged();
     partial void OnPrezentaChanging(bool value);
     partial void OnPrezentaChanged();
+    partial void OnObservatiiChanging(string value);
+    partial void OnObservatiiChanged();
     #endregion
 		
 		public CopilActivitate()
@@ -782,6 +786,26 @@ namespace Proiect_ABD
 					this._Prezenta = value;
 					this.SendPropertyChanged("Prezenta");
 					this.OnPrezentaChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Observatii", DbType="VarChar(255)")]
+		public string Observatii
+		{
+			get
+			{
+				return this._Observatii;
+			}
+			set
+			{
+				if ((this._Observatii != value))
+				{
+					this.OnObservatiiChanging(value);
+					this.SendPropertyChanging();
+					this._Observatii = value;
+					this.SendPropertyChanged("Observatii");
+					this.OnObservatiiChanged();
 				}
 			}
 		}

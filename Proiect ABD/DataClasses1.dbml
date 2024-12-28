@@ -31,6 +31,7 @@
       <Column Name="CopilID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="ActivitateID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="Prezenta" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Observatii" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
       <Association Name="Activitate_CopilActivitate" Member="Activitate" ThisKey="ActivitateID" OtherKey="ActivitateID" Type="Activitate" IsForeignKey="true" />
       <Association Name="Copil_CopilActivitate" Member="Copil" ThisKey="CopilID" OtherKey="CopilID" Type="Copil" IsForeignKey="true" />
     </Type>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -24,13 +25,26 @@ namespace TabaraDeVaraApp.ViewModels
             }
         }
 
+        private ObservableCollection<int> _copiiIDs = new ObservableCollection<int>();
+
+        public ObservableCollection<int> CopiiIDs
+        {
+            get => _copiiIDs;
+            set
+            {
+                _copiiIDs = value;
+                OnPropertyChanged();
+            }
+        }
+
         public Action OnSave { get; private set; }
 
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
-        public AddParinteWindowViewModel(Parinte parinte, Action onSave)
+        public AddParinteWindowViewModel(Parinte parinte, ObservableCollection<int> copiiIDs, Action onSave)
         {
             Parinte = parinte ?? throw new ArgumentNullException(nameof(parinte));
+            CopiiIDs = copiiIDs ?? throw new ArgumentNullException(nameof(copiiIDs));
             OnSave = onSave ?? throw new ArgumentNullException(nameof(onSave));
 
             SaveCommand = new RelayCommand(_ => Save());

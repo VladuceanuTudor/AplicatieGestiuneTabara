@@ -17,6 +17,8 @@ namespace TabaraDeVaraApp.ViewModels
 
         public ICommand AddParinteCommand { get; }
         public ICommand EditParinteCommand { get; }
+        public ICommand AddActivitateCommand { get; }
+
         private Educator _educator;
         private ObservableCollection<Copil> _copii;
         private ObservableCollection<Activitate> _activitati;
@@ -87,6 +89,18 @@ namespace TabaraDeVaraApp.ViewModels
             }
         }
 
+        private ObservableCollection<int> _copiiIDs = new ObservableCollection<int>();
+        public ObservableCollection<int> CopiiIDs
+        {
+            get => _copiiIDs;
+            set
+            {
+                _copiiIDs = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         private void ShowAddParinteWindow(AddParinteWindowViewModel viewModel)
         {
             var window = new AddParinteWindow
@@ -127,8 +141,8 @@ namespace TabaraDeVaraApp.ViewModels
 
         private void AddParinte()
         {
-            var newParinte = new TabaraDeVaraApp.Models.Parinte(); // Ensure the correct class is used
-            var viewModel = new AddParinteWindowViewModel(newParinte, () =>
+            var newParinte = new TabaraDeVaraApp.Models.Parinte();
+            var viewModel = new AddParinteWindowViewModel(newParinte, CopiiIDs, () =>
             {
                 var dbParinte = ConvertToDatabaseParinte(newParinte);
                 using (var db = new DataClasses1DataContext())
@@ -137,6 +151,22 @@ namespace TabaraDeVaraApp.ViewModels
                     db.SubmitChanges();
 
                     Parinti.Add(dbParinte);
+
+                    foreach (var copilID in CopiiIDs)
+                    {
+                        if (copilID != 0)
+                        {
+                            var copilParinte = new CopilParinte
+                            {
+                                CopilID = copilID,
+                                ParinteID = dbParinte.ParinteID
+                            };
+
+                            db.CopilParintes.InsertOnSubmit(copilParinte);
+                        }
+                    }
+
+                    db.SubmitChanges();
                 }
             });
 
@@ -150,7 +180,17 @@ namespace TabaraDeVaraApp.ViewModels
             // Convert database Parinte to application Parinte
             var appParinte = ConvertToAppParinte(SelectedParinte);
 
-            var viewModel = new AddParinteWindowViewModel(appParinte, () =>
+            using (var db = new DataClasses1DataContext())
+            {
+                // Populate CopiiIDs with child IDs associated with the selected parent
+                var copiiId = db.CopilParintes
+                                .Where(cp => cp.ParinteID == SelectedParinte.ParinteID)
+                                .Select(cp => cp.CopilID)
+                                .ToList();
+                CopiiIDs = new ObservableCollection<int>(copiiId);
+            }
+
+            var viewModel = new AddParinteWindowViewModel(appParinte, CopiiIDs, () =>
             {
                 using (var db = new DataClasses1DataContext())
                 {
@@ -161,6 +201,25 @@ namespace TabaraDeVaraApp.ViewModels
                     parinteInDb.Email = appParinte.Email;
                     parinteInDb.NumarTel = appParinte.NumarTel;
                     parinteInDb.Parola = appParinte.Parola;
+
+                    // Update CopilParintes for this parent
+                    var existingCopilParintes = db.CopilParintes
+                                                  .Where(cp => cp.ParinteID == SelectedParinte.ParinteID)
+                                                  .ToList();
+                    db.CopilParintes.DeleteAllOnSubmit(existingCopilParintes);
+
+                    foreach (var copilID in CopiiIDs)
+                    {
+                        if (copilID != 0)
+                        {
+                            var copilParinte = new CopilParinte
+                            {
+                                CopilID = copilID,
+                                ParinteID = SelectedParinte.ParinteID
+                            };
+                            db.CopilParintes.InsertOnSubmit(copilParinte);
+                        }
+                    }
 
                     db.SubmitChanges();
                 }
@@ -173,19 +232,65 @@ namespace TabaraDeVaraApp.ViewModels
             ShowAddParinteWindow(viewModel);
         }
 
+        private void ShowAddActivitateWindow(AddActivitateViewModel viewModel)
+        {
+            var window = new AddActivitateWindow
+            {
+                DataContext = viewModel
+            };
+            window.ShowDialog();
+        }
+
+        private TabaraDeVaraApp.Models.Activitate ConvertToAppActivitate(Proiect_ABD.Activitate dbActivitate)
+        {
+            return new TabaraDeVaraApp.Models.Activitate
+            {
+                // Assuming these are the properties
+                ActivitateID = dbActivitate.ActivitateID,
+                Denumire = dbActivitate.Nume,
+                Descriere = dbActivitate.Descriere,
+                EducatorID = dbActivitate.EducatorID
+                // Map other properties as needed
+            };
+        }
+
+
+        private void AddActivitate()
+        {
+            var newActivitate = new TabaraDeVaraApp.Models.Activitate(); // Use application model
+
+            var viewModel = new AddActivitateViewModel(newActivitate, () =>
+            {
+                using (var db = new DataClasses1DataContext())
+                {
+                    
+                    var dbActivitate = new Proiect_ABD.Activitate
+                    {
+                        Nume = newActivitate.Denumire,
+                        Descriere = newActivitate.Descriere,
+                        EducatorID = E.EducatorID
+                        // Map other properties if needed
+                    };
+
+                    // Insert the database model into the database
+                    db.Activitates.InsertOnSubmit(dbActivitate);
+                    db.SubmitChanges();
+
+                    // Convert the inserted database model to the application model and add it to the collection
+                    //Activitati.Add(ConvertToAppActivitate(dbActivitate)); // Use the conversion method
+                }
+            });
+
+            ShowAddActivitateWindow(viewModel);
+        }
+
+
 
         public EducatorViewModel(Educator Edu)
         {
-            //MessageBox.Show("Hello, World1!");
 
             _educator = Edu;
-            //_educator.EducatorID = Edu.EducatorID;
-            //_educator.Nume = Edu.Nume;
-            //_educator.Prenume = Edu.Prenume;
-            //_educator.Email = Edu.Email;
-            //_educator.NumarTel = Edu.NumarTel;
-
-            //MessageBox.Show("Hello, World2!");
+            
 
             using (var db = new DataClasses1DataContext())
             {
@@ -218,32 +323,10 @@ namespace TabaraDeVaraApp.ViewModels
 
                 AddParinteCommand = new RelayCommand(_ => AddParinte());
                 EditParinteCommand = new RelayCommand(_ => EditParinte());
+                AddActivitateCommand = new RelayCommand(_ => AddActivitate());
+
             }
         }
-
-        //private void LoadEducatorData()
-        //{
-        //    using (var db = new DataClasses1DataContext())
-        //    {
-        //        // Fetch the first educator from the database
-        //        var educator = db.Educators.FirstOrDefault();
-        //        if (educator != null)
-        //        {
-        //            // Assign the educator data
-        //            E = educator;
-
-        //            // Fetch and assign related Copii (children)
-        //            Copii = new ObservableCollection<Copil>(db.Copils
-        //                .Where(c => c.EducatorID == educator.EducatorID)
-        //                .ToList());
-
-        //            // Fetch and assign related Activitati (activities)
-        //            Activitati = new ObservableCollection<Activitate>(db.Activitates
-        //                .Where(a => a.EducatorID == educator.EducatorID)
-        //                .ToList());
-        //        }
-        //    }
-        //}
 
         public event PropertyChangedEventHandler PropertyChanged;
 

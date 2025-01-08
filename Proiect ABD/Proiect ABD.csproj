@@ -64,11 +64,15 @@
     </Compile>
     <Compile Include="Models\CopilParinte.cs" />
     <Compile Include="ViewModels\ActivitateViewModel.cs" />
+    <Compile Include="ViewModels\AddActivitateViewModel.cs" />
     <Compile Include="ViewModels\AddParinteViewModel.cs" />
     <Compile Include="ViewModels\CopilViewModel.cs" />
     <Compile Include="ViewModels\EducatorViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ParinteViewModel.cs" />
+    <Compile Include="Views\AddActivitateWindow.xaml.cs">
+      <DependentUpon>AddActivitateWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AddParinteWindow.xaml.cs">
       <DependentUpon>AddParinteWindow.xaml</DependentUpon>
     </Compile>
@@ -88,6 +92,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\AddActivitateWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AddParinteWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

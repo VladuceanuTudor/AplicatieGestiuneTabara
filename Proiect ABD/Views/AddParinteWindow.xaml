@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        Title="Adaugă Părinte" Height="500" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="Adaugă Părinte" Height="700" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
 <Grid Margin="10">
     <Grid.RowDefinitions>
         <RowDefinition Height="*"/>
@@ -22,10 +22,22 @@
         <TextBlock Text="Email:" Margin="0,10,0,5" FontWeight="Bold"/>
         <TextBox Text="{Binding Parinte.Email, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
 
-        <TextBlock Text="Copil ID:" Margin="0,10,0,5" FontWeight="Bold"/>
-        <TextBox Text="{Binding Parinte.CopilID, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
+            <StackPanel Orientation="Vertical" Margin="10">
+                <TextBlock Text="Copil ID 1:" Margin="0,5"/>
+                <TextBox Text="{Binding CopiiIDs[0], UpdateSourceTrigger=PropertyChanged}" Margin="0,5"/>
 
-        <TextBlock Text="Parola:" Margin="0,10,0,5" FontWeight="Bold"/>
+                <TextBlock Text="Copil ID 2:" Margin="0,5"/>
+                <TextBox Text="{Binding CopiiIDs[1], UpdateSourceTrigger=PropertyChanged}" Margin="0,5"/>
+
+                <TextBlock Text="Copil ID 3:" Margin="0,5"/>
+                <TextBox Text="{Binding CopiiIDs[2], UpdateSourceTrigger=PropertyChanged}" Margin="0,5"/>
+
+                <TextBlock Text="Copil ID 4:" Margin="0,5"/>
+                <TextBox Text="{Binding CopiiIDs[3], UpdateSourceTrigger=PropertyChanged}" Margin="0,5"/>
+
+            </StackPanel>
+
+            <TextBlock Text="Parola:" Margin="0,10,0,5" FontWeight="Bold"/>
         <TextBox Text="{Binding Parinte.Parola, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
         </StackPanel>
 

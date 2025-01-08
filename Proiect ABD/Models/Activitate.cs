@@ -23,6 +23,8 @@ namespace TabaraDeVaraApp.Models
         [Column(CanBeNull = false)]
         public int EducatorID { get; set; }
 
+        public string Descriere { get; set; }
+
         // Navigation property for Educator
         private EntityRef<Educator> _Educator;
         [Association(Storage = "_Educator", ThisKey = "EducatorID", OtherKey = "EducatorID", IsForeignKey = true)]

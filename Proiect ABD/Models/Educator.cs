@@ -34,9 +34,10 @@ namespace TabaraDeVaraApp.Models
         [Association(Storage = "_Copii", OtherKey = "EducatorID", ThisKey = "EducatorID")]
         public EntitySet<Copil> Copii
         {
-            get { return this._Copii; }
-            set { this._Copii.Assign(value); }
+            get => _Copii;
+            set => _Copii.Assign(value);
         }
+
 
         // Navigation property for related Activitate entities
         private EntitySet<Activitate> _Activitati;

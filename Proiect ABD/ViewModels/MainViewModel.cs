@@ -1,5 +1,6 @@
 ﻿using Proiect_ABD;
 using System.Linq;
+using System;
 using System.Windows;
 using System.Windows.Input;
 using TabaraDeVaraApp.Views;
@@ -78,15 +79,18 @@ namespace TabaraDeVaraApp.ViewModels
             if (copil != null)
                 return new CopilViewModel(copil);
 
+            //MessageBox.Show($"Email: {email}, Password: {password}");
             var educator = _db.Educators.FirstOrDefault(e => e.Email == email && e.Parola == password);
+            //MessageBox.Show($"Educator found: {educator != null}");
             if (educator != null)
-                return new EducatorViewModel
-                {
-                    EducatorID = educator.EducatorID,
-                    Nume = educator.Nume,
-                    Prenume = educator.Prenume,
-                    Email = educator.Email
-                };
+            {
+                //MessageBox.Show("Hello, World!");
+                return new EducatorViewModel(educator);
+            }
+            else
+            {
+                MessageBox.Show("Educator not found.");
+            }
 
             return null;
         }

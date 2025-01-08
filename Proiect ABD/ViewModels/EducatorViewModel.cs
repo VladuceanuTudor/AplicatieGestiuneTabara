@@ -4,17 +4,26 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Input;
+using TabaraDeVaraApp.Commands;
+using TabaraDeVaraApp.ViewModels;
+using TabaraDeVaraApp.Views;
 
 
 namespace TabaraDeVaraApp.ViewModels
 {
     public class EducatorViewModel : INotifyPropertyChanged
     {
+
+        public ICommand AddParinteCommand { get; }
+        public ICommand EditParinteCommand { get; }
         private Educator _educator;
         private ObservableCollection<Copil> _copii;
         private ObservableCollection<Activitate> _activitati;
         private ObservableCollection<Parinte> _parinti;
         private ObservableCollection<Educator> _educatori;
+
+        
 
         public Educator E
         {
@@ -66,6 +75,105 @@ namespace TabaraDeVaraApp.ViewModels
             }
         }
 
+        private Parinte _selectedParinte;
+        public Parinte SelectedParinte
+        {
+            get => _selectedParinte;
+            set
+            {
+                //MessageBox.Show("Hello, World1!");
+                _selectedParinte = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private void ShowAddParinteWindow(AddParinteWindowViewModel viewModel)
+        {
+            var window = new AddParinteWindow
+            {
+                DataContext = viewModel
+            };
+            window.ShowDialog();
+        }
+
+        private Proiect_ABD.Parinte ConvertToDatabaseParinte(TabaraDeVaraApp.Models.Parinte appParinte)
+        {
+            return new Proiect_ABD.Parinte
+            {
+                //ParinteID = appParinte.ParinteID,
+                Nume = appParinte.Nume,
+                Prenume = appParinte.Prenume,
+                Email = appParinte.Email,
+                Parola = appParinte.Parola,
+                NumarTel = appParinte.NumarTel
+                // Map other properties as needed
+            };
+        }
+
+        private TabaraDeVaraApp.Models.Parinte ConvertToAppParinte(Proiect_ABD.Parinte dbParinte)
+        {
+            return new TabaraDeVaraApp.Models.Parinte
+            {
+                //ParinteID = dbParinte.ParinteID,
+                Nume = dbParinte.Nume,
+                Prenume = dbParinte.Prenume,
+                Email = dbParinte.Email,
+                NumarTel = dbParinte.NumarTel,
+                Parola = dbParinte.Parola
+                // Map other properties as needed
+            };
+        }
+
+
+        private void AddParinte()
+        {
+            var newParinte = new TabaraDeVaraApp.Models.Parinte(); // Ensure the correct class is used
+            var viewModel = new AddParinteWindowViewModel(newParinte, () =>
+            {
+                var dbParinte = ConvertToDatabaseParinte(newParinte);
+                using (var db = new DataClasses1DataContext())
+                {
+                    db.Parintes.InsertOnSubmit(dbParinte);
+                    db.SubmitChanges();
+
+                    Parinti.Add(dbParinte);
+                }
+            });
+
+            ShowAddParinteWindow(viewModel);
+        }
+
+        private void EditParinte()
+        {
+            if (SelectedParinte == null) return;
+
+            // Convert database Parinte to application Parinte
+            var appParinte = ConvertToAppParinte(SelectedParinte);
+
+            var viewModel = new AddParinteWindowViewModel(appParinte, () =>
+            {
+                using (var db = new DataClasses1DataContext())
+                {
+                    // Find the corresponding Parinte in the database
+                    var parinteInDb = db.Parintes.Single(p => p.ParinteID == SelectedParinte.ParinteID);
+                    parinteInDb.Nume = appParinte.Nume;
+                    parinteInDb.Prenume = appParinte.Prenume;
+                    parinteInDb.Email = appParinte.Email;
+                    parinteInDb.NumarTel = appParinte.NumarTel;
+                    parinteInDb.Parola = appParinte.Parola;
+
+                    db.SubmitChanges();
+                }
+
+                // Refresh UI
+                var index = Parinti.IndexOf(SelectedParinte);
+                Parinti[index] = ConvertToDatabaseParinte(appParinte);
+            });
+
+            ShowAddParinteWindow(viewModel);
+        }
+
+
         public EducatorViewModel(Educator Edu)
         {
             //MessageBox.Show("Hello, World1!");
@@ -108,7 +216,8 @@ namespace TabaraDeVaraApp.ViewModels
 
                 Educatori = new ObservableCollection<Educator>(allEducatori);
 
-                //MessageBox.Show("Hello, World3!");
+                AddParinteCommand = new RelayCommand(_ => AddParinte());
+                EditParinteCommand = new RelayCommand(_ => EditParinte());
             }
         }
 

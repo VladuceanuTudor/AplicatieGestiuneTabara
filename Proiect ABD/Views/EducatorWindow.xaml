@@ -84,7 +84,7 @@
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel>
                             <Button Content="Adaugă Părinte" Style="{StaticResource NavbarButtonStyle}" Width="200" Margin="10" HorizontalAlignment="Center" Command="{Binding AddParinteCommand}"/>
-                            <ListBox ItemsSource="{Binding Parinti}" Margin="10">
+                            <ListBox ItemsSource="{Binding Parinti}" Margin="10" SelectedItem="{Binding SelectedParinte}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel>
@@ -94,6 +94,7 @@
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
+                            <Button Content="Editare Părinte" Style="{StaticResource NavbarButtonStyle}" Width="200" Margin="10" HorizontalAlignment="Center" Command="{Binding EditParinteCommand}"/>
                         </StackPanel>
                     </ScrollViewer>
                 </TabItem>

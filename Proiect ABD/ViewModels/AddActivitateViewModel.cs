@@ -22,22 +22,33 @@ namespace TabaraDeVaraApp.ViewModels
             }
         }
 
+        private ObservableCollection<Copil> _copii;
+        public ObservableCollection<Copil> Copii
+        {
+            get => _copii;
+            set
+            {
+                _copii = value;
+                OnPropertyChanged();
+            }
+        }
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
 
         private readonly Action _onSave;
 
-        public AddActivitateViewModel(Activitate activitate, Action onSave)
+        public AddActivitateViewModel(Activitate activitate, Action onSave, ObservableCollection<Copil> copii)
         {
             _activitate = activitate;
             _onSave = onSave;
+            Copii = copii ?? throw new ArgumentNullException(nameof(copii));
             SaveCommand = new RelayCommand(_ =>
             {
                 _onSave?.Invoke();
+                CloseWindow();
             });
             CancelCommand = new RelayCommand(_ => Cancel());
         }
-
         private void Cancel()
         {
             CloseWindow();

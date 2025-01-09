@@ -45,12 +45,17 @@
         <StackPanel Margin="10">
             <!-- Activity Name -->
             <TextBlock Text="Nume Activitate:" Margin="0,10,0,5"/>
-            <TextBox Text="{Binding Activitate.Nume, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Text="{Binding Activitate.Denumire, UpdateSourceTrigger=PropertyChanged}"/>
 
             <!-- Activity Description -->
             <TextBlock Text="Descriere Activitate:" Margin="0,10,0,5"/>
             <TextBox Text="{Binding Activitate.Descriere, UpdateSourceTrigger=PropertyChanged}" 
                      AcceptsReturn="True" Height="100" TextWrapping="Wrap"/>
+
+            <!-- Activity Description -->
+            <TextBlock Text="Data si Ora:" Margin="0,10,0,5"/>
+            <TextBox Text="{Binding Activitate.DataOra, UpdateSourceTrigger=PropertyChanged}" 
+            AcceptsReturn="True"  TextWrapping="Wrap"/>
 
             <!-- Select Children -->
             <TextBlock Text="Selectează copiii participanți:" Margin="0,10,0,5"/>

@@ -68,7 +68,7 @@
                                                 <StackPanel>
                                                     <TextBlock Text="{Binding Nume}" HorizontalAlignment="Center"/>
                                                     <TextBlock Text="{Binding Prenume}" HorizontalAlignment="Center"/>
-                                                    <TextBlock Text="{Binding Varsta, StringFormat='Age: {0}'}" HorizontalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding Varsta, StringFormat='Varsta: {0}'}" HorizontalAlignment="Center"/>
                                                 </StackPanel>
                                             </Button>
                                         </DataTemplate>
@@ -89,7 +89,9 @@
                                     <DataTemplate>
                                         <StackPanel>
                                             <TextBlock Text="{Binding Nume}" FontWeight="Bold"/>
-                                            <TextBlock Text="{Binding CopilNume, StringFormat='Copil: {0}'}"/>
+                                            <TextBlock Text="{Binding Prenume}"/>
+                                            <TextBlock Text="{Binding NumarTel, StringFormat='NrTel: {0}'}"/>
+                                            <TextBlock Text="{Binding Email, StringFormat='Email: {0}'}"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
@@ -104,16 +106,24 @@
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel>
                             <Button Content="Adaugă Activitate" Style="{StaticResource NavbarButtonStyle}" Width="200" Margin="10" HorizontalAlignment="Center" Command="{Binding AddActivitateCommand}"/>
-                            <ListBox ItemsSource="{Binding Activitati}" Margin="10">
+                            <ListBox ItemsSource="{Binding Activitati}" Margin="10" SelectedItem="{Binding SelectedActivitate}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel>
                                             <TextBlock Text="{Binding Nume}" FontWeight="Bold"/>
-                                            <TextBlock Text="{Binding CopiiParticipanti, StringFormat='Copii Participanti: {0}'}"/>
+                                            <TextBlock Text="{Binding Descriere, StringFormat='Descriere: {0}'}"/>
+                                            <TextBlock Text="{Binding Data}" FontWeight="Bold" Foreground="#333"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
+                            <Button Content="Editare Activitate"
+        Style="{StaticResource NavbarButtonStyle}"
+        Width="200"
+        Margin="10"
+        HorizontalAlignment="Center"
+        Command="{Binding EditActivitateCommand}"
+        IsEnabled="{Binding SelectedActivitate}"/>
                         </StackPanel>
                     </ScrollViewer>
                 </TabItem>
@@ -127,7 +137,11 @@
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel>
+                                            <TextBlock Text="{Binding EducatorID}" FontWeight="Bold"/>
                                             <TextBlock Text="{Binding Nume}" FontWeight="Bold"/>
+                                            <TextBlock Text="{Binding Prenume}" FontWeight="Bold"/>
+                                            <TextBlock Text="{Binding NumarTel}" FontWeight="Bold"/>
+                                            <TextBlock Text="{Binding Email}" FontWeight="Bold"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>

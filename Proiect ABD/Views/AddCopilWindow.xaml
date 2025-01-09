@@ -1,0 +1,14 @@
+﻿<Window x:Class="TabaraDeVaraApp.Views.AddCopilWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Add Copil" Height="250" Width="400">
+    <Grid>
+        <StackPanel>
+            <TextBox Text="{Binding Copil.Nume}"  Margin="10"/>
+            <TextBox Text="{Binding Copil.Prenume}" Margin="10"/>
+            <TextBox Text="{Binding Copil.Varsta}" Margin="10"/>
+            <TextBox Text="{Binding Copil.Parola}" Margin="10"/>
+            <Button Content="Save" Command="{Binding SaveCommand}" Margin="10"/>
+        </StackPanel>
+    </Grid>
+</Window>

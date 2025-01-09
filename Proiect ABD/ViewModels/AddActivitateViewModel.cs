@@ -22,8 +22,8 @@ namespace TabaraDeVaraApp.ViewModels
             }
         }
 
-        private ObservableCollection<Copil> _copii;
-        public ObservableCollection<Copil> Copii
+        private ObservableCollection<Models.CopilWithFlag> _copii;
+        public ObservableCollection<Models.CopilWithFlag> Copii
         {
             get => _copii;
             set
@@ -37,7 +37,7 @@ namespace TabaraDeVaraApp.ViewModels
 
         private readonly Action _onSave;
 
-        public AddActivitateViewModel(Activitate activitate, Action onSave, ObservableCollection<Copil> copii)
+        public AddActivitateViewModel(Activitate activitate, Action onSave, ObservableCollection<Models.CopilWithFlag> copii)
         {
             _activitate = activitate;
             _onSave = onSave;

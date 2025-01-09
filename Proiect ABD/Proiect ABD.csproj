@@ -63,8 +63,10 @@
       <DependentUpon>DataClasses1.dbml</DependentUpon>
     </Compile>
     <Compile Include="Models\CopilParinte.cs" />
+    <Compile Include="Models\CopilWithFlag.cs" />
     <Compile Include="ViewModels\ActivitateViewModel.cs" />
     <Compile Include="ViewModels\AddActivitateViewModel.cs" />
+    <Compile Include="ViewModels\AddCopilWindowViewModel.cs" />
     <Compile Include="ViewModels\AddParinteViewModel.cs" />
     <Compile Include="ViewModels\CopilViewModel.cs" />
     <Compile Include="ViewModels\EducatorViewModel.cs" />
@@ -72,6 +74,9 @@
     <Compile Include="ViewModels\ParinteViewModel.cs" />
     <Compile Include="Views\AddActivitateWindow.xaml.cs">
       <DependentUpon>AddActivitateWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddCopilWindow.xaml.cs">
+      <DependentUpon>AddCopilWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AddParinteWindow.xaml.cs">
       <DependentUpon>AddParinteWindow.xaml</DependentUpon>
@@ -93,6 +98,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\AddActivitateWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddCopilWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

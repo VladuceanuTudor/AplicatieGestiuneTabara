@@ -1,4 +1,5 @@
 ﻿using Proiect_ABD;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
@@ -19,6 +20,8 @@ namespace TabaraDeVaraApp.ViewModels
         public ICommand AddParinteCommand { get; }
         public ICommand EditParinteCommand { get; }
         public ICommand AddActivitateCommand { get; }
+
+        public ICommand AddCopilCommand { get; }
 
         private Educator _educator;
         private ObservableCollection<Copil> _copii;
@@ -286,39 +289,59 @@ namespace TabaraDeVaraApp.ViewModels
         {
             var newActivitate = new TabaraDeVaraApp.Models.Activitate(); // Use application model
 
-            var viewModel = new AddActivitateViewModel(newActivitate, () =>
+            // Load CopilActivitate relationships for the current Activitate
+            using (var db = new DataClasses1DataContext())
             {
-                using (var db = new DataClasses1DataContext())
-                {
-                    //var copiiId = db.Copils
-                    //            .Where(cp => cp.EducatorID == E.EducatorID)
-                    //            .Select(cp => cp.CopilID)
-                    //            .ToList();
-                    //CopiiIDs = new ObservableCollection<int>(copiiId);
-
-
-                    var dbActivitate = new Proiect_ABD.Activitate
+                var copiiWithFlags = new ObservableCollection<TabaraDeVaraApp.Models.CopilWithFlag>(
+                    Copii.Select(c => new TabaraDeVaraApp.Models.CopilWithFlag
                     {
-                        Nume = newActivitate.Denumire,
-                        Descriere = newActivitate.Descriere,
-                        EducatorID = E.EducatorID,
-                        Data = newActivitate.DataOra
-                        // Map other properties if needed
-                    };
+                        Copil = ConvertToAppCopil(c),
+                        IsChecked = false // Initially unchecked, since this is a new activity
+                    })
+                );
 
-                    // Insert the database model into the database
-                    db.Activitates.InsertOnSubmit(dbActivitate);
-                    db.SubmitChanges();
+                var viewModel = new AddActivitateViewModel(newActivitate, () =>
+                {
+                    using (var innerDb = new DataClasses1DataContext()) // Renamed from `db` to `innerDb`
+                    {
+                        // Create a new database entity
+                        var dbActivitate = new Proiect_ABD.Activitate
+                        {
+                            Nume = newActivitate.Denumire,
+                            Descriere = newActivitate.Descriere,
+                            EducatorID = E.EducatorID, // Make sure this is properly set
+                            Data = newActivitate.DataOra
+                        };
 
-                    // Convert the inserted database model to the application model and add it to the collection
-                    Activitati.Add(dbActivitate); // Use the conversion method
-                }
-            }, new ObservableCollection<TabaraDeVaraApp.Models.Copil>(
-                Copii.Select(c => ConvertToAppCopil(c))
-             ));
+                        // Insert the database model into the database
+                        innerDb.Activitates.InsertOnSubmit(dbActivitate);
+                        innerDb.SubmitChanges(); // Commit the new activity to the database
 
-            ShowAddActivitateWindow(viewModel);
+                        // Convert the inserted database model to the application model and add it to the collection
+                        Activitati.Add(dbActivitate); // Use the conversion method to add it to the UI collection
+
+                        // Now handle CopilActivitate relationships based on checkbox selections
+                        foreach (var copilWithFlag in copiiWithFlags)
+                        {
+                            if (copilWithFlag.IsChecked)
+                            {
+                                // Add relationship for checked children
+                                innerDb.CopilActivitates.InsertOnSubmit(new CopilActivitate
+                                {
+                                    ActivitateID = dbActivitate.ActivitateID, // New activity ID
+                                    CopilID = copilWithFlag.Copil.CopilID
+                                });
+                            }
+                        }
+
+                        innerDb.SubmitChanges(); // Commit the CopilActivitate changes to the database
+                    }
+                }, copiiWithFlags);
+
+                ShowAddActivitateWindow(viewModel);
+            }
         }
+
 
         private void EditActivitate()
         {
@@ -326,29 +349,109 @@ namespace TabaraDeVaraApp.ViewModels
 
             var appActivitate = ConvertToAppActivitate(SelectedActivitate);
 
-            var viewModel = new AddActivitateViewModel(appActivitate, () =>
+            // Load CopilActivitate relationships for the current Activitate
+            using (var db = new DataClasses1DataContext())
+            {
+                var connectedCopiiIds = db.CopilActivitates
+                    .Where(ca => ca.ActivitateID == SelectedActivitate.ActivitateID)
+                    .Select(ca => ca.CopilID)
+                    .ToHashSet();
+
+                var copiiWithFlags = new ObservableCollection<TabaraDeVaraApp.Models.CopilWithFlag>(
+                    Copii.Select(c => new TabaraDeVaraApp.Models.CopilWithFlag
+                    {
+                        Copil = ConvertToAppCopil(c),
+                        IsChecked = connectedCopiiIds.Contains(c.CopilID)
+                    })
+                );
+                if (SelectedActivitate == null) MessageBox.Show("Hello, World1!");
+                var viewModel = new AddActivitateViewModel(appActivitate, () =>
+                {
+                    using (var innerDb = new DataClasses1DataContext()) // Renamed from `db` to `innerDb`
+                    {
+                        var dbActivitate = innerDb.Activitates.Single(a => a.ActivitateID == SelectedActivitate.ActivitateID);
+                        dbActivitate.Nume = appActivitate.Denumire;
+                        dbActivitate.Descriere = appActivitate.Descriere;
+                        dbActivitate.Data = appActivitate.DataOra;
+
+                        innerDb.SubmitChanges();
+                        if (SelectedActivitate == null) MessageBox.Show("Hello, World2!");
+                        // Refresh the activity in the UI
+                        //var index = Activitati.IndexOf(SelectedActivitate);
+                        //Activitati[index] = dbActivitate;
+                        
+                        // Update CopilActivitate table based on checkbox changes
+                        foreach (var copilWithFlag in copiiWithFlags)
+                        {
+                            if (copilWithFlag.IsChecked && !connectedCopiiIds.Contains(copilWithFlag.Copil.CopilID))
+                            {
+                                if (SelectedActivitate == null) MessageBox.Show("Hello, World3!");
+                                // Add relationship
+                                innerDb.CopilActivitates.InsertOnSubmit(new CopilActivitate
+                                {
+                                    ActivitateID = SelectedActivitate.ActivitateID,
+                                    CopilID = copilWithFlag.Copil.CopilID
+                                });
+                            }
+                            else if (!copilWithFlag.IsChecked && connectedCopiiIds.Contains(copilWithFlag.Copil.CopilID))
+                            {
+                                // Remove relationship
+                                var relationship = innerDb.CopilActivitates.SingleOrDefault(ca =>
+                                    ca.ActivitateID == SelectedActivitate.ActivitateID &&
+                                    ca.CopilID == copilWithFlag.Copil.CopilID);
+
+                                if (relationship != null)
+                                {
+                                    innerDb.CopilActivitates.DeleteOnSubmit(relationship);
+                                }
+                            }
+                        }
+
+                        innerDb.SubmitChanges();
+                    }
+                }, copiiWithFlags);
+
+                ShowAddActivitateWindow(viewModel);
+            }
+        }
+
+        private void ShowAddCopilWindow(AddCopilWindowViewModel viewModel)
+        {
+            var window = new AddCopilWindow
+            {
+                DataContext = viewModel
+            };
+            window.ShowDialog();
+        }
+
+        private void AddCopil()
+        {
+            var newCopil = new TabaraDeVaraApp.Models.Copil(); // Create a new Copil model
+
+            var viewModel = new AddCopilWindowViewModel(newCopil, () =>
             {
                 using (var db = new DataClasses1DataContext())
                 {
-                    var dbActivitate = db.Activitates.Single(a => a.ActivitateID == SelectedActivitate.ActivitateID);
-                    dbActivitate.Nume = appActivitate.Denumire;
-                    dbActivitate.Descriere = appActivitate.Descriere;
-                    dbActivitate.Data = appActivitate.DataOra;
+                    var dbCopil = new Proiect_ABD.Copil
+                    {
+                        Nume = newCopil.Nume,
+                        Prenume = newCopil.Prenume,
+                        Varsta = newCopil.Varsta,
+                        Parola = newCopil.Parola,
+                        EducatorID = E.EducatorID // Ensure the new Copil is associated with the current educator
+                    };
 
+                    // Insert the new Copil into the database
+                    db.Copils.InsertOnSubmit(dbCopil);
                     db.SubmitChanges();
 
-                    // Refresh the activity in the UI
-                    var index = Activitati.IndexOf(SelectedActivitate);
-                    Activitati[index] = dbActivitate;
+                    // Add the new Copil to the ObservableCollection so it updates the UI
+                    Copii.Add(dbCopil);
                 }
-            }, new ObservableCollection<TabaraDeVaraApp.Models.Copil>(
-                Copii.Select(c => ConvertToAppCopil(c))
-             ));
+            });
 
-            ShowAddActivitateWindow(viewModel);
+            ShowAddCopilWindow(viewModel);
         }
-
-
         public EducatorViewModel(Educator Edu)
         {
 
@@ -388,6 +491,7 @@ namespace TabaraDeVaraApp.ViewModels
                 EditParinteCommand = new RelayCommand(_ => EditParinte());
                 AddActivitateCommand = new RelayCommand(_ => AddActivitate());
                 EditActivitateCommand = new RelayCommand(_ => EditActivitate());
+                AddCopilCommand = new RelayCommand(_ => AddCopil());
 
             }
         }

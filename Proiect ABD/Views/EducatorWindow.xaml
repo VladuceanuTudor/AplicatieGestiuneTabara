@@ -61,24 +61,29 @@
                         <StackPanel>
                             <Button Content="Adaugă Copil" Style="{StaticResource NavbarButtonStyle}" Width="200" Margin="10" HorizontalAlignment="Center" Command="{Binding AddCopilCommand}"/>
                             <WrapPanel HorizontalAlignment="Center">
-                                <ItemsControl ItemsSource="{Binding Copii}">
-                                    <ItemsControl.ItemTemplate>
+                                <!-- Using ListBox for binding SelectedItem -->
+                                <ListBox ItemsSource="{Binding Copii}" SelectedItem="{Binding SelectedCopil}">
+                                    <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <Button Style="{StaticResource CardButtonStyle}">
-                                                <StackPanel>
-                                                    <TextBlock Text="{Binding Nume}" HorizontalAlignment="Center"/>
-                                                    <TextBlock Text="{Binding Prenume}" HorizontalAlignment="Center"/>
-                                                    <TextBlock Text="{Binding Varsta, StringFormat='Varsta: {0}'}" HorizontalAlignment="Center"/>
-                                                </StackPanel>
-                                            </Button>
+                                            <StackPanel>
+                                                <Button Style="{StaticResource CardButtonStyle}">
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding CopilID}" HorizontalAlignment="Center"/>
+                                                        <TextBlock Text="{Binding Nume}" HorizontalAlignment="Center"/>
+                                                        <TextBlock Text="{Binding Prenume}" HorizontalAlignment="Center"/>
+                                                        <TextBlock Text="{Binding Varsta, StringFormat='Varsta: {0}'}" HorizontalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Button>
+                                                <Button Content="Edit" Style="{StaticResource NavbarButtonStyle}" Width="100" Margin="5" HorizontalAlignment="Center" Command="{Binding DataContext.EditCopilCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" />
+                                            </StackPanel>
                                         </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
                             </WrapPanel>
                         </StackPanel>
                     </ScrollViewer>
                 </TabItem>
-
+                
                 <!-- Parinti Tab -->
                 <TabItem Header="Parinti">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">

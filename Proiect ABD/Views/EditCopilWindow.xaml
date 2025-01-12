@@ -1,0 +1,46 @@
+﻿<Window x:Class="TabaraDeVaraApp.Views.EditCopilWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Edit Copil" Height="500" Width="800">
+    <Grid Margin="10">
+        <StackPanel>
+            <TextBlock Text="Edit Copil Data" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+
+            <!-- Copil Details -->
+            <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                <TextBlock Text="Nume:"/>
+                <TextBox Text="{Binding Copil.Nume}" Width="300"/>
+                <TextBlock Text="Prenume:"/>
+                <TextBox Text="{Binding Copil.Prenume}" Width="300"/>
+                <TextBlock Text="Varsta:"/>
+                <TextBox Text="{Binding Copil.Varsta}" Width="300"/>
+                <TextBlock Text="Id:"/>
+                <TextBox Text="{Binding Copil.CopilID}" Width="300"/>
+                <TextBlock Text="Parola:"/>
+                <TextBox Text="{Binding Copil.Parola}" Width="300"/>
+            </StackPanel>
+
+            <!-- Activities List -->
+            <TextBlock Text="Edit Activities:" FontWeight="Bold" Margin="0,10,0,5"/>
+            <DataGrid ItemsSource="{Binding ComboCCA}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="0,0,0,10" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Activitate" Binding="{Binding Activitate.Denumire}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Prezenta" Binding="{Binding CopilActivitate.Prezenta, Mode=TwoWay}"/>
+                    <DataGridTemplateColumn Header="Observatii">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding CopilActivitate.Observatii, Mode=TwoWay}" HorizontalAlignment="Stretch"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!-- Buttons -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                <Button Content="Save" Width="100" Margin="5" Command="{Binding SaveCommand}"/>
+                <Button Content="Cancel" Width="100" Margin="5" Command="{Binding CancelCommand}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

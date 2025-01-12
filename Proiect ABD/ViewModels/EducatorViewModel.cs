@@ -20,9 +20,12 @@ namespace TabaraDeVaraApp.ViewModels
         public ICommand AddParinteCommand { get; }
         public ICommand EditParinteCommand { get; }
         public ICommand AddActivitateCommand { get; }
-
         public ICommand AddCopilCommand { get; }
+        public ICommand EditCopilCommand { get; }
 
+
+
+        public Copil SelectedCopil { get; set; }
         private Educator _educator;
         private ObservableCollection<Copil> _copii;
         private ObservableCollection<Activitate> _activitati;
@@ -452,6 +455,160 @@ namespace TabaraDeVaraApp.ViewModels
 
             ShowAddCopilWindow(viewModel);
         }
+
+        private ObservableCollection<CopilActivitate> FetchCopilActivitates(int copilId)
+        {
+            using (var db = new DataClasses1DataContext())
+            {
+                var result = db.CopilActivitates
+                    .Where(ca => ca.CopilID == copilId)
+                    .Select(ca => new
+                    {
+                        ActivitateNume = ca.Activitate.Nume,
+                        ca.Prezenta,
+                        ca.Observatii
+                    })
+                    .ToList();
+
+                // Now map the result to CopilActivitate if needed
+                var copilActivitates = new ObservableCollection<CopilActivitate>(
+                    result.Select(r => new CopilActivitate
+                    {
+                        Activitate = new Activitate { Nume = r.ActivitateNume },
+                        Prezenta = r.Prezenta,
+                        Observatii = r.Observatii
+                    })
+                );
+
+                return copilActivitates;
+            }
+        }
+        
+        private ObservableCollection<CopilActivitate> FetchActivitates(int copilId)
+        {
+            using (var db = new DataClasses1DataContext())
+            {
+                var result = db.CopilActivitates
+                    .Where(ca => ca.CopilID == copilId)
+                    .Select(ca => new
+                    {
+                        ActivitateID = ca.ActivitateID,
+                    })
+                    .ToList();
+
+                // Extract the ActivitateIDs from the result
+                var activitateIds = result.Select(r => r.ActivitateID).ToList();
+
+                // Second query: Get the Activitate Nume for each ActivitateID
+                var activitateNames = db.Activitates
+                    .Where(ac => activitateIds.Contains(ac.ActivitateID))
+                    .Select(ac => new
+                    {
+                        ac.ActivitateID,
+                        ac.Nume
+                    })
+                    .ToList();
+
+                // Now map the result to CopilActivitate and include Activitate Nume
+                var Activitates = new ObservableCollection<CopilActivitate>(
+                    result.Select(r => new CopilActivitate
+                    {
+                        Activitate = new Activitate
+                        {
+                            Nume = activitateNames
+                                .FirstOrDefault(an => an.ActivitateID == r.ActivitateID)?.Nume // Get the Nume based on ActivitateID
+                        },
+                    })
+                );
+
+                return Activitates;
+            }
+
+        }
+        private void RefreshCopii()
+        {
+            using (var db = new DataClasses1DataContext())
+            {
+                Copii = new ObservableCollection<Copil>(
+                    db.Copils.Where(cp => cp.EducatorID == _educator.EducatorID).ToList());
+            }
+        }
+
+        private bool CanEditCopil(object parameter)
+        {
+            return SelectedCopil != null;
+        }
+
+        private TabaraDeVaraApp.Models.Copil MapCopil(Proiect_ABD.Copil copil)
+        {
+            return new TabaraDeVaraApp.Models.Copil
+            {
+                CopilID = copil.CopilID,
+                Nume = copil.Nume,
+                Varsta = copil.Varsta,
+                Parola = copil.Parola,
+                Prenume = copil.Prenume,
+
+            };
+        }
+
+        private ObservableCollection<TabaraDeVaraApp.Models.CopilActivitate> MapCopilActivitateCollection(ObservableCollection<Proiect_ABD.CopilActivitate> copilActivitati)
+        {
+            return new ObservableCollection<TabaraDeVaraApp.Models.CopilActivitate>(
+                copilActivitati.Select(ca => new TabaraDeVaraApp.Models.CopilActivitate
+                {
+                    ActivitateID = ca.ActivitateID,
+                    CopilID = ca.CopilID,
+                    Observatii = ca.Observatii,
+                    Prezenta = ca.Prezenta,
+                    
+                })
+            );
+        }
+        private ObservableCollection<TabaraDeVaraApp.Models.Activitate> MapCopilActivitateToActivitateCollection(ObservableCollection<Proiect_ABD.CopilActivitate> copilActivitateCollection)
+        {
+            return new ObservableCollection<TabaraDeVaraApp.Models.Activitate>(
+                copilActivitateCollection.Select(ca => new TabaraDeVaraApp.Models.Activitate
+                {
+                    
+                    Denumire = ca.Activitate?.Nume,      
+                })
+            );
+        }
+
+
+
+        private void OpenEditCopilWindow(object parameter)
+        {
+            if (!CanEditCopil(parameter))  // `parameter` will be the SelectedCopil
+            {
+                MessageBox.Show("Invalid selection or no child selected.");
+                return;
+            }
+
+            var selectedCopil = parameter as Copil;
+            if (selectedCopil == null)
+            {
+                MessageBox.Show("Invalid selection.");
+                return;
+            }
+
+            var mappedCopil = MapCopil(selectedCopil);
+            var copilActivitates = FetchCopilActivitates(selectedCopil.CopilID);
+            var activitati = FetchActivitates(selectedCopil.CopilID);
+            var mappedCopilActivitates = MapCopilActivitateCollection(copilActivitates);
+            var activitateCollection = MapCopilActivitateToActivitateCollection(copilActivitates);
+
+
+            var editWindow = new EditCopilWindow
+            {
+                DataContext = new EditCopilWindowViewModel(mappedCopil, mappedCopilActivitates, activitateCollection)
+            };
+            editWindow.ShowDialog();
+        }
+
+
+
         public EducatorViewModel(Educator Edu)
         {
 
@@ -492,6 +649,7 @@ namespace TabaraDeVaraApp.ViewModels
                 AddActivitateCommand = new RelayCommand(_ => AddActivitate());
                 EditActivitateCommand = new RelayCommand(_ => EditActivitate());
                 AddCopilCommand = new RelayCommand(_ => AddCopil());
+                EditCopilCommand = new RelayCommand(OpenEditCopilWindow, CanEditCopil);
 
             }
         }

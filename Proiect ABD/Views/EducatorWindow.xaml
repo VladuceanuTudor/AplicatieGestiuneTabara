@@ -74,7 +74,9 @@
                                                         <TextBlock Text="{Binding Varsta, StringFormat='Varsta: {0}'}" HorizontalAlignment="Center"/>
                                                     </StackPanel>
                                                 </Button>
-                                                <Button Content="Edit" Style="{StaticResource NavbarButtonStyle}" Width="100" Margin="5" HorizontalAlignment="Center" Command="{Binding DataContext.EditCopilCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" />
+                                                <Button Content="Edit" Style="{StaticResource NavbarButtonStyle}" Width="100" Margin="5" HorizontalAlignment="Center" 
+                                                    Command="{Binding DataContext.EditCopilCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    CommandParameter="{Binding}" />
                                             </StackPanel>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>

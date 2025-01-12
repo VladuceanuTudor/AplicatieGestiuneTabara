@@ -69,6 +69,7 @@
     <Compile Include="ViewModels\AddCopilWindowViewModel.cs" />
     <Compile Include="ViewModels\AddParinteViewModel.cs" />
     <Compile Include="ViewModels\CopilViewModel.cs" />
+    <Compile Include="ViewModels\EditCopilWindowViewModel.cs" />
     <Compile Include="ViewModels\EducatorViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ParinteViewModel.cs" />
@@ -83,6 +84,9 @@
     </Compile>
     <Compile Include="Views\CopilWindow.xaml.cs">
       <DependentUpon>CopilWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditCopilWindow.xaml.cs">
+      <DependentUpon>EditCopilWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EducatorWindow.xaml.cs">
       <DependentUpon>EducatorWindow.xaml</DependentUpon>
@@ -110,6 +114,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CopilWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditCopilWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

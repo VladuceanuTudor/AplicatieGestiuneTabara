@@ -17,6 +17,12 @@ namespace TabaraDeVaraApp.Models
         [Column(IsPrimaryKey = true, CanBeNull = false)]
         public int ActivitateID { get; set; }
 
+        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        public string Observatii { get; set; }
+
+        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        public bool Prezenta { get; set; }
+
         // Navigation property for Copil
         private EntityRef<Copil> _Copil;
         [Association(Storage = "_Copil", ThisKey = "CopilID", OtherKey = "CopilID", IsForeignKey = true)]

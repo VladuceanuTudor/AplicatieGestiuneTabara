@@ -3,9 +3,10 @@
 
 namespace TabaraDeVaraApp.Views
 {
-    public partial class AddCopilWindow : Window
+    
+    public partial class EditCopilWindow : Window
     {
-        public AddCopilWindow()
+        public EditCopilWindow()
         {
             InitializeComponent();
         }

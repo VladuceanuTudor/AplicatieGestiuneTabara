@@ -620,8 +620,8 @@ namespace TabaraDeVaraApp.ViewModels
                             // Update the existing Copil record in the database
                             var dbCopil = innerDb.Copils.Single(cp => cp.CopilID == mappedCopil.CopilID);
                             dbCopil.Nume = mappedCopil.Nume; // Update Nume
-                            MessageBox.Show($"nume1: {mappedCopil.Nume}");
-                            MessageBox.Show($"nume2: {dbCopil.Nume}");
+                            //MessageBox.Show($"nume1: {mappedCopil.Nume}");
+                            //MessageBox.Show($"nume2: {dbCopil.Nume}");
                             dbCopil.Prenume = mappedCopil.Prenume; // Update Prenume
                             dbCopil.Varsta = mappedCopil.Varsta; // Update Varsta
                             dbCopil.Parola = mappedCopil.Parola; // Update Parola
@@ -638,7 +638,7 @@ namespace TabaraDeVaraApp.ViewModels
 
                         foreach (var copilWithFlag in mappedCopilActivitates)
                         {
-                            MessageBox.Show($"ActivitateID: {copilWithFlag.CopilID}");
+                            //MessageBox.Show($"ActivitateID: {copilWithFlag.CopilID}");
                             if (copilWithFlag.CopilID != 0)
                             {
                                 // Fetch the existing relationship from the database
@@ -656,7 +656,7 @@ namespace TabaraDeVaraApp.ViewModels
 
 
                                         existingRelationship.Observatii = copilWithFlag.Observatii;
-                                        MessageBox.Show($"obs: {existingRelationship.Observatii}");
+                                        //MessageBox.Show($"obs: {copilWithFlag.Observatii}");
                                     
                                 }
                             }

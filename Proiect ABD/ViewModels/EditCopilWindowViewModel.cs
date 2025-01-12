@@ -49,13 +49,15 @@ namespace TabaraDeVaraApp.ViewModels
             //DisplayCopilActivitateNames();
 
             SaveCommand = new RelayCommand(_ => {
-                MessageBox.Show($"nume0: {Copil.Nume}");
+               // MessageBox.Show($"nume0: {Copil.Nume}");
                 copilActivitates = new ObservableCollection<CopilActivitate>(
                 ComboCCA.Select(caWithActivitate => caWithActivitate.CopilActivitate)
                 );
                 activitates = new ObservableCollection<Activitate>(
                 ComboCCA.Select(caWithActivitate => caWithActivitate.Activitate)
                 );
+               //MessageBox.Show($"obs: {copilActivitates[0].Observatii}");
+                //MessageBox.Show($"obs: {copilActivitates[1].Observatii}");
                 Save();
             });
             CancelCommand = new RelayCommand(_ => CloseWindow());

@@ -21,20 +21,22 @@ namespace TabaraDeVaraApp.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
 
         public Copil Copil { get; }
-        public ObservableCollection<CopilActivitate> CopilActivitates { get; }
-        public ObservableCollection<Activitate> Activitates { get; }
+        public ObservableCollection<CopilActivitate> CopilActivitates { get; set; }
+        public ObservableCollection<Activitate> Activitates { get; set; }
 
         public ObservableCollection<CopilActivitateWithActivitate> ComboCCA { get; }
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
 
         public Action CloseAction { get; }
+        public Action OnSave { get; private set; }
 
-        public EditCopilWindowViewModel(Copil copil, ObservableCollection<CopilActivitate> copilActivitates, ObservableCollection<Activitate> activitates)
+        public EditCopilWindowViewModel(Copil copil, ObservableCollection<CopilActivitate> copilActivitates, ObservableCollection<Activitate> activitates, Action onSave)
         {
             Copil = copil ?? throw new ArgumentNullException(nameof(copil));
             CopilActivitates = copilActivitates ?? new ObservableCollection<CopilActivitate>();
             Activitates = activitates ?? new ObservableCollection<Activitate>();
+            OnSave = onSave ?? throw new ArgumentNullException(nameof(onSave));
             int i = 0;
             ComboCCA = new ObservableCollection<CopilActivitateWithActivitate>(
                 CopilActivitates.Select(ca => new CopilActivitateWithActivitate
@@ -46,8 +48,17 @@ namespace TabaraDeVaraApp.ViewModels
 
             //DisplayCopilActivitateNames();
 
-            SaveCommand = new RelayCommand(_ => Save());
-            CancelCommand = new RelayCommand(_ => Cancel());
+            SaveCommand = new RelayCommand(_ => {
+                MessageBox.Show($"nume0: {Copil.Nume}");
+                copilActivitates = new ObservableCollection<CopilActivitate>(
+                ComboCCA.Select(caWithActivitate => caWithActivitate.CopilActivitate)
+                );
+                activitates = new ObservableCollection<Activitate>(
+                ComboCCA.Select(caWithActivitate => caWithActivitate.Activitate)
+                );
+                Save();
+            });
+            CancelCommand = new RelayCommand(_ => CloseWindow());
         }
 
         private void DisplayCopilActivitateNames()
@@ -58,24 +69,19 @@ namespace TabaraDeVaraApp.ViewModels
 
         private void Save()
         {
-            foreach (var copilActivitate in CopilActivitates)
+            OnSave?.Invoke();
+            CloseWindow();
+        }
+        private void CloseWindow()
+        {
+            foreach (Window window in Application.Current.Windows)
             {
-                UpdateCopilActivitateInDatabase(copilActivitate);
+                if (window.DataContext == this)
+                {
+                    window.Close();
+                    break;
+                }
             }
-
-            MessageBox.Show("Changes saved successfully!");
-            CloseAction?.Invoke();
-        }
-
-        private void Cancel()
-        {
-            CloseAction?.Invoke();
-        }
-
-        private void UpdateCopilActivitateInDatabase(CopilActivitate copilActivitate)
-        {
-            // Implement database update logic here
-            // Example: Update copilActivitate using Entity Framework or another ORM
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

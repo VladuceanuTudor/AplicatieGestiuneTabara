@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using TabaraDeVaraApp.Commands;
+
 using TabaraDeVaraApp.ViewModels;
 using TabaraDeVaraApp.Views;
 
@@ -411,6 +412,12 @@ namespace TabaraDeVaraApp.ViewModels
                         }
 
                         innerDb.SubmitChanges();
+                        var activitati = innerDb.Activitates
+                            .Where(ac => ac.EducatorID == _educator.EducatorID)
+                            .Select(ac => ac)
+                            .ToList();
+
+                        Activitati = new ObservableCollection<Activitate>(activitati);
                     }
                 }, copiiWithFlags);
 
@@ -464,7 +471,8 @@ namespace TabaraDeVaraApp.ViewModels
                     .Where(ca => ca.CopilID == copilId)
                     .Select(ca => new
                     {
-                        ActivitateNume = ca.Activitate.Nume,
+                        ActivitateID = ca.ActivitateID,
+                        CopilID = ca.CopilID,
                         ca.Prezenta,
                         ca.Observatii
                     })
@@ -474,7 +482,8 @@ namespace TabaraDeVaraApp.ViewModels
                 var copilActivitates = new ObservableCollection<CopilActivitate>(
                     result.Select(r => new CopilActivitate
                     {
-                        Activitate = new Activitate { Nume = r.ActivitateNume },
+                        Activitate = new Activitate { ActivitateID = r.ActivitateID },
+                        CopilID = r.CopilID,
                         Prezenta = r.Prezenta,
                         Observatii = r.Observatii
                     })
@@ -570,7 +579,7 @@ namespace TabaraDeVaraApp.ViewModels
             return new ObservableCollection<TabaraDeVaraApp.Models.Activitate>(
                 copilActivitateCollection.Select(ca => new TabaraDeVaraApp.Models.Activitate
                 {
-                    
+                    ActivitateID = ca.ActivitateID,
                     Denumire = ca.Activitate?.Nume,      
                 })
             );
@@ -597,12 +606,71 @@ namespace TabaraDeVaraApp.ViewModels
             var copilActivitates = FetchCopilActivitates(selectedCopil.CopilID);
             var activitati = FetchActivitates(selectedCopil.CopilID);
             var mappedCopilActivitates = MapCopilActivitateCollection(copilActivitates);
-            var activitateCollection = MapCopilActivitateToActivitateCollection(copilActivitates);
-
+            var activitateCollection = MapCopilActivitateToActivitateCollection(activitati);
 
             var editWindow = new EditCopilWindow
             {
-                DataContext = new EditCopilWindowViewModel(mappedCopil, mappedCopilActivitates, activitateCollection)
+                DataContext = new EditCopilWindowViewModel(mappedCopil, mappedCopilActivitates, activitateCollection, () =>
+                {
+                    using (var innerDb = new DataClasses1DataContext()) 
+                    {
+                        
+                        if (SelectedCopil != null)
+                        {
+                            // Update the existing Copil record in the database
+                            var dbCopil = innerDb.Copils.Single(cp => cp.CopilID == mappedCopil.CopilID);
+                            dbCopil.Nume = mappedCopil.Nume; // Update Nume
+                            MessageBox.Show($"nume1: {mappedCopil.Nume}");
+                            MessageBox.Show($"nume2: {dbCopil.Nume}");
+                            dbCopil.Prenume = mappedCopil.Prenume; // Update Prenume
+                            dbCopil.Varsta = mappedCopil.Varsta; // Update Varsta
+                            dbCopil.Parola = mappedCopil.Parola; // Update Parola
+                           // MessageBox.Show("SelectedCopil up!");
+
+                            // Commit the changes for Copil
+                            innerDb.SubmitChanges();
+                        }
+                        else
+                        {
+                            MessageBox.Show("SelectedCopil is null!");
+                            return;
+                        }
+
+                        foreach (var copilWithFlag in mappedCopilActivitates)
+                        {
+                            MessageBox.Show($"ActivitateID: {copilWithFlag.CopilID}");
+                            if (copilWithFlag.CopilID != 0)
+                            {
+                                // Fetch the existing relationship from the database
+                                var existingRelationship = innerDb.CopilActivitates.SingleOrDefault(ca =>
+                                    ca.ActivitateID == copilWithFlag.ActivitateID &&
+                                    ca.CopilID == copilWithFlag.CopilID);
+
+                                if (existingRelationship != null)
+                                {
+                                    // Update Prezenta and Observatii if changed
+                                    if (existingRelationship.Prezenta != copilWithFlag.Prezenta)
+                                    {
+                                        existingRelationship.Prezenta = copilWithFlag.Prezenta;
+                                    }
+
+
+                                        existingRelationship.Observatii = copilWithFlag.Observatii;
+                                        MessageBox.Show($"obs: {existingRelationship.Observatii}");
+                                    
+                                }
+                            }
+                        }
+
+                        innerDb.SubmitChanges();
+                        var copii = innerDb.Copils
+                            .Where(cp => cp.EducatorID == _educator.EducatorID)
+                            .Select(cp => cp)
+                            .ToList();
+
+                        Copii = new ObservableCollection<Copil>(copii);
+                    }
+                })
             };
             editWindow.ShowDialog();
         }

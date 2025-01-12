@@ -1,7 +1,7 @@
 ﻿<Window x:Class="TabaraDeVaraApp.Views.EditCopilWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Edit Copil" Height="500" Width="800">
+        Title="Edit Copil" Height="600" Width="800">
     <Grid Margin="10">
         <StackPanel>
             <TextBlock Text="Edit Copil Data" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>

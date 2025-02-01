@@ -35,9 +35,9 @@ namespace TabaraDeVaraApp.Models
         }
 
         // Navigation property for related Copil entities through CopilActivitate
-        private EntitySet<CopilActivitate> _CopilActivitate;
+        private EntitySet<CopilActivitati> _CopilActivitate;
         [Association(Storage = "_CopilActivitate", OtherKey = "ActivitateID", ThisKey = "ActivitateID")]
-        public EntitySet<CopilActivitate> CopilActivitate
+        public EntitySet<CopilActivitati> CopilActivitate
         {
             get { return this._CopilActivitate; }
             set { this._CopilActivitate.Assign(value); }
@@ -45,7 +45,7 @@ namespace TabaraDeVaraApp.Models
 
         public Activitate()
         {
-            _CopilActivitate = new EntitySet<CopilActivitate>();
+            _CopilActivitate = new EntitySet<CopilActivitati>();
         }
     }
 

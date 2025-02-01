@@ -36,8 +36,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -56,14 +59,45 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Activitate.cs">
+      <DependentUpon>TabaraDeVaraEF.tt</DependentUpon>
+    </Compile>
     <Compile Include="Commands\RelayCommand.cs" />
-    <Compile Include="DataClasses1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataClasses1.dbml</DependentUpon>
+    <Compile Include="Copil.cs">
+      <DependentUpon>TabaraDeVaraEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CopilActivitate.cs">
+      <DependentUpon>TabaraDeVaraEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CopilParinte.cs">
+      <DependentUpon>TabaraDeVaraEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Educator.cs">
+      <DependentUpon>TabaraDeVaraEF.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CopilParinte.cs" />
     <Compile Include="Models\CopilWithFlag.cs" />
+    <Compile Include="Parinte.cs">
+      <DependentUpon>TabaraDeVaraEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagram.cs">
+      <DependentUpon>TabaraDeVaraEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TabaraDeVaraEF.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TabaraDeVaraEF.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TabaraDeVaraEF.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TabaraDeVaraEF.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TabaraDeVaraEF.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TabaraDeVaraEF.edmx</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\ActivitateViewModel.cs" />
     <Compile Include="ViewModels\AddActivitateViewModel.cs" />
     <Compile Include="ViewModels\AddCopilWindowViewModel.cs" />
@@ -137,7 +171,7 @@
   <ItemGroup>
     <Compile Include="Models\Activitate.cs" />
     <Compile Include="Models\Copil.cs" />
-    <Compile Include="Models\CopilActivitate.cs" />
+    <Compile Include="Models\CopilActivitati.cs" />
     <Compile Include="Models\Educator.cs" />
     <Compile Include="Models\Parinte.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -157,17 +191,17 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="DataClasses1.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>DataClasses1.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DataClasses1.dbml.layout">
-      <DependentUpon>DataClasses1.dbml</DependentUpon>
-    </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <EntityDeploy Include="TabaraDeVaraEF.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TabaraDeVaraEF.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="TabaraDeVaraEF.edmx.diagram">
+      <DependentUpon>TabaraDeVaraEF.edmx</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -175,8 +209,20 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="TabaraDeVaraEF.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TabaraDeVaraEF.Context.cs</LastGenOutput>
+      <DependentUpon>TabaraDeVaraEF.edmx</DependentUpon>
+    </Content>
+    <Content Include="TabaraDeVaraEF.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TabaraDeVaraEF.edmx</DependentUpon>
+      <LastGenOutput>TabaraDeVaraEF.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\summercamp.jpg" />
   </ItemGroup>

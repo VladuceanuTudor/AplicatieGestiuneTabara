@@ -153,10 +153,10 @@ namespace TabaraDeVaraApp.ViewModels
             var viewModel = new AddParinteWindowViewModel(newParinte, CopiiIDs, () =>
             {
                 var dbParinte = ConvertToDatabaseParinte(newParinte);
-                using (var db = new DataClasses1DataContext())
+                using (var db = new TabaraDeVaraEntities())
                 {
-                    db.Parintes.InsertOnSubmit(dbParinte);
-                    db.SubmitChanges();
+                    db.Parintes.Add(dbParinte);
+                    db.SaveChanges();
 
                     Parinti.Add(dbParinte);
 
@@ -170,11 +170,11 @@ namespace TabaraDeVaraApp.ViewModels
                                 ParinteID = dbParinte.ParinteID
                             };
 
-                            db.CopilParintes.InsertOnSubmit(copilParinte);
+                            db.CopilParintes.Add(copilParinte);
                         }
                     }
 
-                    db.SubmitChanges();
+                    db.SaveChanges();
                 }
             });
 
@@ -200,7 +200,7 @@ namespace TabaraDeVaraApp.ViewModels
             // Convert database Parinte to application Parinte
             var appParinte = ConvertToAppParinte(SelectedParinte);
 
-            using (var db = new DataClasses1DataContext())
+            using (var db = new TabaraDeVaraEntities())
             {
                 // Populate CopiiIDs with child IDs associated with the selected parent
                 var copiiId = db.CopilParintes
@@ -212,7 +212,7 @@ namespace TabaraDeVaraApp.ViewModels
 
             var viewModel = new AddParinteWindowViewModel(appParinte, CopiiIDs, () =>
             {
-                using (var db = new DataClasses1DataContext())
+                using (var db = new TabaraDeVaraEntities())
                 {
                     // Find the corresponding Parinte in the database
                     var parinteInDb = db.Parintes.Single(p => p.ParinteID == SelectedParinte.ParinteID);
@@ -226,7 +226,13 @@ namespace TabaraDeVaraApp.ViewModels
                     var existingCopilParintes = db.CopilParintes
                                                   .Where(cp => cp.ParinteID == SelectedParinte.ParinteID)
                                                   .ToList();
-                    db.CopilParintes.DeleteAllOnSubmit(existingCopilParintes);
+                    foreach (var copilParinte in existingCopilParintes)
+                    {
+                        db.CopilParintes.Remove(copilParinte); // Remove each entry
+                    }
+
+                    db.SaveChanges(); // Commit the changes to the database
+
 
                     foreach (var copilID in CopiiIDs)
                     {
@@ -237,11 +243,11 @@ namespace TabaraDeVaraApp.ViewModels
                                 CopilID = copilID,
                                 ParinteID = SelectedParinte.ParinteID
                             };
-                            db.CopilParintes.InsertOnSubmit(copilParinte);
+                            db.CopilParintes.Add(copilParinte);
                         }
                     }
 
-                    db.SubmitChanges();
+                    db.SaveChanges();
                 }
 
                 // Refresh UI
@@ -294,7 +300,7 @@ namespace TabaraDeVaraApp.ViewModels
             var newActivitate = new TabaraDeVaraApp.Models.Activitate(); // Use application model
 
             // Load CopilActivitate relationships for the current Activitate
-            using (var db = new DataClasses1DataContext())
+            using (var db = new TabaraDeVaraEntities())
             {
                 var copiiWithFlags = new ObservableCollection<TabaraDeVaraApp.Models.CopilWithFlag>(
                     Copii.Select(c => new TabaraDeVaraApp.Models.CopilWithFlag
@@ -306,7 +312,7 @@ namespace TabaraDeVaraApp.ViewModels
 
                 var viewModel = new AddActivitateViewModel(newActivitate, () =>
                 {
-                    using (var innerDb = new DataClasses1DataContext()) // Renamed from `db` to `innerDb`
+                    using (var innerDb = new TabaraDeVaraEntities()) // Renamed from `db` to `innerDb`
                     {
                         // Create a new database entity
                         var dbActivitate = new Proiect_ABD.Activitate
@@ -318,8 +324,8 @@ namespace TabaraDeVaraApp.ViewModels
                         };
 
                         // Insert the database model into the database
-                        innerDb.Activitates.InsertOnSubmit(dbActivitate);
-                        innerDb.SubmitChanges(); // Commit the new activity to the database
+                        innerDb.Activitates.Add(dbActivitate);
+                        innerDb.SaveChanges(); // Commit the new activity to the database
 
                         // Convert the inserted database model to the application model and add it to the collection
                         Activitati.Add(dbActivitate); // Use the conversion method to add it to the UI collection
@@ -330,7 +336,7 @@ namespace TabaraDeVaraApp.ViewModels
                             if (copilWithFlag.IsChecked)
                             {
                                 // Add relationship for checked children
-                                innerDb.CopilActivitates.InsertOnSubmit(new CopilActivitate
+                                innerDb.CopilActivitates.Add(new CopilActivitate
                                 {
                                     ActivitateID = dbActivitate.ActivitateID, // New activity ID
                                     CopilID = copilWithFlag.Copil.CopilID
@@ -338,7 +344,7 @@ namespace TabaraDeVaraApp.ViewModels
                             }
                         }
 
-                        innerDb.SubmitChanges(); // Commit the CopilActivitate changes to the database
+                        innerDb.SaveChanges(); // Commit the CopilActivitate changes to the database
                     }
                 }, copiiWithFlags);
 
@@ -354,7 +360,7 @@ namespace TabaraDeVaraApp.ViewModels
             var appActivitate = ConvertToAppActivitate(SelectedActivitate);
 
             // Load CopilActivitate relationships for the current Activitate
-            using (var db = new DataClasses1DataContext())
+            using (var db = new TabaraDeVaraEntities())
             {
                 var connectedCopiiIds = db.CopilActivitates
                     .Where(ca => ca.ActivitateID == SelectedActivitate.ActivitateID)
@@ -371,14 +377,14 @@ namespace TabaraDeVaraApp.ViewModels
                 if (SelectedActivitate == null) MessageBox.Show("Hello, World1!");
                 var viewModel = new AddActivitateViewModel(appActivitate, () =>
                 {
-                    using (var innerDb = new DataClasses1DataContext()) // Renamed from `db` to `innerDb`
+                    using (var innerDb = new TabaraDeVaraEntities()) // Renamed from `db` to `innerDb`
                     {
                         var dbActivitate = innerDb.Activitates.Single(a => a.ActivitateID == SelectedActivitate.ActivitateID);
                         dbActivitate.Nume = appActivitate.Denumire;
                         dbActivitate.Descriere = appActivitate.Descriere;
                         dbActivitate.Data = appActivitate.DataOra;
 
-                        innerDb.SubmitChanges();
+                        innerDb.SaveChanges();
                         if (SelectedActivitate == null) MessageBox.Show("Hello, World2!");
                         // Refresh the activity in the UI
                         //var index = Activitati.IndexOf(SelectedActivitate);
@@ -391,7 +397,7 @@ namespace TabaraDeVaraApp.ViewModels
                             {
                                 if (SelectedActivitate == null) MessageBox.Show("Hello, World3!");
                                 // Add relationship
-                                innerDb.CopilActivitates.InsertOnSubmit(new CopilActivitate
+                                innerDb.CopilActivitates.Add(new CopilActivitate
                                 {
                                     ActivitateID = SelectedActivitate.ActivitateID,
                                     CopilID = copilWithFlag.Copil.CopilID
@@ -406,12 +412,12 @@ namespace TabaraDeVaraApp.ViewModels
 
                                 if (relationship != null)
                                 {
-                                    innerDb.CopilActivitates.DeleteOnSubmit(relationship);
+                                    innerDb.CopilActivitates.Remove(relationship);
                                 }
                             }
                         }
 
-                        innerDb.SubmitChanges();
+                        innerDb.SaveChanges();
                         var activitati = innerDb.Activitates
                             .Where(ac => ac.EducatorID == _educator.EducatorID)
                             .Select(ac => ac)
@@ -440,7 +446,7 @@ namespace TabaraDeVaraApp.ViewModels
 
             var viewModel = new AddCopilWindowViewModel(newCopil, () =>
             {
-                using (var db = new DataClasses1DataContext())
+                using (var db = new TabaraDeVaraEntities())
                 {
                     var dbCopil = new Proiect_ABD.Copil
                     {
@@ -452,8 +458,8 @@ namespace TabaraDeVaraApp.ViewModels
                     };
 
                     // Insert the new Copil into the database
-                    db.Copils.InsertOnSubmit(dbCopil);
-                    db.SubmitChanges();
+                    db.Copils.Add(dbCopil);
+                    db.SaveChanges();
 
                     // Add the new Copil to the ObservableCollection so it updates the UI
                     Copii.Add(dbCopil);
@@ -465,7 +471,7 @@ namespace TabaraDeVaraApp.ViewModels
 
         private ObservableCollection<CopilActivitate> FetchCopilActivitates(int copilId)
         {
-            using (var db = new DataClasses1DataContext())
+            using (var db = new TabaraDeVaraEntities())
             {
                 var result = db.CopilActivitates
                     .Where(ca => ca.CopilID == copilId)
@@ -495,7 +501,7 @@ namespace TabaraDeVaraApp.ViewModels
         
         private ObservableCollection<CopilActivitate> FetchActivitates(int copilId)
         {
-            using (var db = new DataClasses1DataContext())
+            using (var db = new TabaraDeVaraEntities())
             {
                 var result = db.CopilActivitates
                     .Where(ca => ca.CopilID == copilId)
@@ -536,7 +542,7 @@ namespace TabaraDeVaraApp.ViewModels
         }
         private void RefreshCopii()
         {
-            using (var db = new DataClasses1DataContext())
+            using (var db = new TabaraDeVaraEntities())
             {
                 Copii = new ObservableCollection<Copil>(
                     db.Copils.Where(cp => cp.EducatorID == _educator.EducatorID).ToList());
@@ -561,10 +567,10 @@ namespace TabaraDeVaraApp.ViewModels
             };
         }
 
-        private ObservableCollection<TabaraDeVaraApp.Models.CopilActivitate> MapCopilActivitateCollection(ObservableCollection<Proiect_ABD.CopilActivitate> copilActivitati)
+        private ObservableCollection<TabaraDeVaraApp.Models.CopilActivitati> MapCopilActivitateCollection(ObservableCollection<Proiect_ABD.CopilActivitate> copilActivitati)
         {
-            return new ObservableCollection<TabaraDeVaraApp.Models.CopilActivitate>(
-                copilActivitati.Select(ca => new TabaraDeVaraApp.Models.CopilActivitate
+            return new ObservableCollection<TabaraDeVaraApp.Models.CopilActivitati>(
+                copilActivitati.Select(ca => new TabaraDeVaraApp.Models.CopilActivitati
                 {
                     ActivitateID = ca.ActivitateID,
                     CopilID = ca.CopilID,
@@ -612,7 +618,7 @@ namespace TabaraDeVaraApp.ViewModels
             {
                 DataContext = new EditCopilWindowViewModel(mappedCopil, mappedCopilActivitates, activitateCollection, () =>
                 {
-                    using (var innerDb = new DataClasses1DataContext()) 
+                    using (var innerDb = new TabaraDeVaraEntities()) 
                     {
                         
                         if (SelectedCopil != null)
@@ -628,7 +634,7 @@ namespace TabaraDeVaraApp.ViewModels
                            // MessageBox.Show("SelectedCopil up!");
 
                             // Commit the changes for Copil
-                            innerDb.SubmitChanges();
+                            innerDb.SaveChanges();
                         }
                         else
                         {
@@ -662,7 +668,7 @@ namespace TabaraDeVaraApp.ViewModels
                             }
                         }
 
-                        innerDb.SubmitChanges();
+                        innerDb.SaveChanges();
                         var copii = innerDb.Copils
                             .Where(cp => cp.EducatorID == _educator.EducatorID)
                             .Select(cp => cp)
@@ -683,7 +689,7 @@ namespace TabaraDeVaraApp.ViewModels
             _educator = Edu;
             
 
-            using (var db = new DataClasses1DataContext())
+            using (var db = new TabaraDeVaraEntities())
             {
                 var copii = db.Copils
                     .Where(cp => cp.EducatorID == _educator.EducatorID)
@@ -699,11 +705,14 @@ namespace TabaraDeVaraApp.ViewModels
 
                 Activitati = new ObservableCollection<Activitate>(activitati);
 
+                var copilIds = copii.Select(c => c.CopilID).ToList(); // Get the list of CopilIDs from copii
+
                 var parinti = db.CopilParintes
-                    .Where(cpp => copii.Select(c => c.CopilID).Contains(cpp.CopilID)) // Filter by CopilIDs
+                    .Where(cpp => copilIds.Contains(cpp.CopilID)) // Use the list of CopilIDs for filtering
                     .Select(cpp => cpp.Parinte) // Get the associated Parinte
                     .Distinct() // Ensure unique parents
                     .ToList();
+
 
                 Parinti = new ObservableCollection<Parinte>(parinti);
 

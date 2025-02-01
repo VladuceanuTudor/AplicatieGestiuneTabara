@@ -1,4 +1,4 @@
-﻿using Proiect_ABD;
+﻿//using Proiect_ABD;
 using System.Linq;
 using System;
 using System.Windows;
@@ -10,7 +10,7 @@ namespace TabaraDeVaraApp.ViewModels
 {
     public class MainViewModel
     {
-        private readonly DataClasses1DataContext _db;
+        private readonly Proiect_ABD.TabaraDeVaraEntities _db;
 
         public string Email { get; set; }
         public string Password { get; set; }
@@ -20,7 +20,7 @@ namespace TabaraDeVaraApp.ViewModels
 
         public MainViewModel()
         {
-            _db = new DataClasses1DataContext();
+            _db = new Proiect_ABD.TabaraDeVaraEntities();
             LoginCommand = new RelayCommand(ExecuteLogin, CanExecuteLogin);
         }
 

@@ -14,14 +14,14 @@ namespace TabaraDeVaraApp.ViewModels
     {
         public class CopilActivitateWithActivitate
         {
-            public CopilActivitate CopilActivitate { get; set; }
+            public CopilActivitati CopilActivitate { get; set; }
             public Activitate Activitate { get; set; }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public Copil Copil { get; }
-        public ObservableCollection<CopilActivitate> CopilActivitates { get; set; }
+        public ObservableCollection<CopilActivitati> CopilActivitates { get; set; }
         public ObservableCollection<Activitate> Activitates { get; set; }
 
         public ObservableCollection<CopilActivitateWithActivitate> ComboCCA { get; }
@@ -31,10 +31,10 @@ namespace TabaraDeVaraApp.ViewModels
         public Action CloseAction { get; }
         public Action OnSave { get; private set; }
 
-        public EditCopilWindowViewModel(Copil copil, ObservableCollection<CopilActivitate> copilActivitates, ObservableCollection<Activitate> activitates, Action onSave)
+        public EditCopilWindowViewModel(Copil copil, ObservableCollection<CopilActivitati> copilActivitates, ObservableCollection<Activitate> activitates, Action onSave)
         {
             Copil = copil ?? throw new ArgumentNullException(nameof(copil));
-            CopilActivitates = copilActivitates ?? new ObservableCollection<CopilActivitate>();
+            CopilActivitates = copilActivitates ?? new ObservableCollection<CopilActivitati>();
             Activitates = activitates ?? new ObservableCollection<Activitate>();
             OnSave = onSave ?? throw new ArgumentNullException(nameof(onSave));
             int i = 0;
@@ -50,7 +50,7 @@ namespace TabaraDeVaraApp.ViewModels
 
             SaveCommand = new RelayCommand(_ => {
                // MessageBox.Show($"nume0: {Copil.Nume}");
-                copilActivitates = new ObservableCollection<CopilActivitate>(
+                copilActivitates = new ObservableCollection<CopilActivitati>(
                 ComboCCA.Select(caWithActivitate => caWithActivitate.CopilActivitate)
                 );
                 activitates = new ObservableCollection<Activitate>(

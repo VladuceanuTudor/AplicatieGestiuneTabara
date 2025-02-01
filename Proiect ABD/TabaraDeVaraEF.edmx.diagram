@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a13797fc155d4383b30bbb68f5e711a3" Name="Diagram1" ZoomLevel="54">
+        <EntityTypeShape EntityType="TabaraDeVaraModel.Activitate" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TabaraDeVaraModel.Copil" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TabaraDeVaraModel.CopilActivitate" Width="1.5" PointX="5.25" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TabaraDeVaraModel.CopilParinte" Width="1.5" PointX="5.25" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="TabaraDeVaraModel.Educator" Width="1.5" PointX="0.75" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="TabaraDeVaraModel.Parinte" Width="1.5" PointX="3" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TabaraDeVaraModel.sysdiagram" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="TabaraDeVaraModel.FK__Activitat__Educa__3E52440B" ManuallyRouted="false" />
+        <AssociationConnector Association="TabaraDeVaraModel.FK__CopilActi__Activ__46E78A0C" ManuallyRouted="false" />
+        <AssociationConnector Association="TabaraDeVaraModel.FK__Copil__EducatorI__3B75D760" ManuallyRouted="false" />
+        <AssociationConnector Association="TabaraDeVaraModel.FK__CopilActi__Copil__45F365D3" ManuallyRouted="false" />
+        <AssociationConnector Association="TabaraDeVaraModel.FK__CopilPari__Copil__412EB0B6" ManuallyRouted="false" />
+        <AssociationConnector Association="TabaraDeVaraModel.FK__CopilPari__Parin__4222D4EF" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

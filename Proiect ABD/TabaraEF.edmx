@@ -1,0 +1,453 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TabaraDeVaraModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Activitate">
+          <Key>
+            <PropertyRef Name="ActivitateID" />
+          </Key>
+          <Property Name="ActivitateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nume" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Descriere" Type="nvarchar" MaxLength="255" />
+          <Property Name="Data" Type="date" Nullable="false" />
+          <Property Name="Ora" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Durata" Type="int" Nullable="false" />
+          <Property Name="EducatorID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Copil">
+          <Key>
+            <PropertyRef Name="CopilID" />
+          </Key>
+          <Property Name="CopilID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nume" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Prenume" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Varsta" Type="int" Nullable="false" />
+          <Property Name="Parola" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="EducatorID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CopilActivitate">
+          <Key>
+            <PropertyRef Name="CopilID" />
+            <PropertyRef Name="ActivitateID" />
+          </Key>
+          <Property Name="CopilID" Type="int" Nullable="false" />
+          <Property Name="ActivitateID" Type="int" Nullable="false" />
+          <Property Name="Prezenta" Type="bit" Nullable="false" />
+          <Property Name="Observatii" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="CopilParinte">
+          <Key>
+            <PropertyRef Name="CopilID" />
+            <PropertyRef Name="ParinteID" />
+          </Key>
+          <Property Name="CopilID" Type="int" Nullable="false" />
+          <Property Name="ParinteID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Educator">
+          <Key>
+            <PropertyRef Name="EducatorID" />
+          </Key>
+          <Property Name="EducatorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nume" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Prenume" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Parola" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="NumarTel" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Parinte">
+          <Key>
+            <PropertyRef Name="ParinteID" />
+          </Key>
+          <Property Name="ParinteID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nume" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Prenume" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Parola" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="NumarTel" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK__Activitat__Educa__3E52440B">
+          <End Role="Educator" Type="Self.Educator" Multiplicity="1" />
+          <End Role="Activitate" Type="Self.Activitate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Educator">
+              <PropertyRef Name="EducatorID" />
+            </Principal>
+            <Dependent Role="Activitate">
+              <PropertyRef Name="EducatorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Copil__EducatorI__3B75D760">
+          <End Role="Educator" Type="Self.Educator" Multiplicity="1" />
+          <End Role="Copil" Type="Self.Copil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Educator">
+              <PropertyRef Name="EducatorID" />
+            </Principal>
+            <Dependent Role="Copil">
+              <PropertyRef Name="EducatorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CopilActi__Activ__46E78A0C">
+          <End Role="Activitate" Type="Self.Activitate" Multiplicity="1" />
+          <End Role="CopilActivitate" Type="Self.CopilActivitate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Activitate">
+              <PropertyRef Name="ActivitateID" />
+            </Principal>
+            <Dependent Role="CopilActivitate">
+              <PropertyRef Name="ActivitateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CopilActi__Copil__45F365D3">
+          <End Role="Copil" Type="Self.Copil" Multiplicity="1" />
+          <End Role="CopilActivitate" Type="Self.CopilActivitate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Copil">
+              <PropertyRef Name="CopilID" />
+            </Principal>
+            <Dependent Role="CopilActivitate">
+              <PropertyRef Name="CopilID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CopilPari__Copil__412EB0B6">
+          <End Role="Copil" Type="Self.Copil" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CopilParinte" Type="Self.CopilParinte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Copil">
+              <PropertyRef Name="CopilID" />
+            </Principal>
+            <Dependent Role="CopilParinte">
+              <PropertyRef Name="CopilID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CopilPari__Parin__4222D4EF">
+          <End Role="Parinte" Type="Self.Parinte" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CopilParinte" Type="Self.CopilParinte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parinte">
+              <PropertyRef Name="ParinteID" />
+            </Principal>
+            <Dependent Role="CopilParinte">
+              <PropertyRef Name="ParinteID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TabaraDeVaraModelStoreContainer">
+          <EntitySet Name="Activitate" EntityType="Self.Activitate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Copil" EntityType="Self.Copil" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CopilActivitate" EntityType="Self.CopilActivitate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CopilParinte" EntityType="Self.CopilParinte" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Educator" EntityType="Self.Educator" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Parinte" EntityType="Self.Parinte" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Activitat__Educa__3E52440B" Association="Self.FK__Activitat__Educa__3E52440B">
+            <End Role="Educator" EntitySet="Educator" />
+            <End Role="Activitate" EntitySet="Activitate" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Copil__EducatorI__3B75D760" Association="Self.FK__Copil__EducatorI__3B75D760">
+            <End Role="Educator" EntitySet="Educator" />
+            <End Role="Copil" EntitySet="Copil" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CopilActi__Activ__46E78A0C" Association="Self.FK__CopilActi__Activ__46E78A0C">
+            <End Role="Activitate" EntitySet="Activitate" />
+            <End Role="CopilActivitate" EntitySet="CopilActivitate" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CopilActi__Copil__45F365D3" Association="Self.FK__CopilActi__Copil__45F365D3">
+            <End Role="Copil" EntitySet="Copil" />
+            <End Role="CopilActivitate" EntitySet="CopilActivitate" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CopilPari__Copil__412EB0B6" Association="Self.FK__CopilPari__Copil__412EB0B6">
+            <End Role="Copil" EntitySet="Copil" />
+            <End Role="CopilParinte" EntitySet="CopilParinte" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CopilPari__Parin__4222D4EF" Association="Self.FK__CopilPari__Parin__4222D4EF">
+            <End Role="Parinte" EntitySet="Parinte" />
+            <End Role="CopilParinte" EntitySet="CopilParinte" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TabaraDeVaraModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Activitate">
+          <Key>
+            <PropertyRef Name="ActivitateID" />
+          </Key>
+          <Property Name="ActivitateID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nume" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Descriere" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Data" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Ora" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Durata" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Educator" Relationship="Self.FK__Activitat__Educa__3E52440B" FromRole="Activitate" ToRole="Educator" />
+          <NavigationProperty Name="CopilActivitate" Relationship="Self.FK__CopilActi__Activ__46E78A0C" FromRole="Activitate" ToRole="CopilActivitate" />
+        </EntityType>
+        <EntityType Name="Copil">
+          <Key>
+            <PropertyRef Name="CopilID" />
+          </Key>
+          <Property Name="CopilID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nume" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Prenume" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Varsta" Type="Int32" Nullable="false" />
+          <Property Name="Parola" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Educator" Relationship="Self.FK__Copil__EducatorI__3B75D760" FromRole="Copil" ToRole="Educator" />
+          <NavigationProperty Name="CopilActivitate" Relationship="Self.FK__CopilActi__Copil__45F365D3" FromRole="Copil" ToRole="CopilActivitate" />
+          <NavigationProperty Name="Parinte" Relationship="Self.CopilParinte" FromRole="Copil" ToRole="Parinte" />
+        </EntityType>
+        <EntityType Name="CopilActivitate">
+          <Key>
+            <PropertyRef Name="CopilID" />
+            <PropertyRef Name="ActivitateID" />
+          </Key>
+          <Property Name="CopilID" Type="Int32" Nullable="false" />
+          <Property Name="ActivitateID" Type="Int32" Nullable="false" />
+          <Property Name="Prezenta" Type="Boolean" Nullable="false" />
+          <Property Name="Observatii" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Activitate" Relationship="Self.FK__CopilActi__Activ__46E78A0C" FromRole="CopilActivitate" ToRole="Activitate" />
+          <NavigationProperty Name="Copil" Relationship="Self.FK__CopilActi__Copil__45F365D3" FromRole="CopilActivitate" ToRole="Copil" />
+        </EntityType>
+        <EntityType Name="Educator">
+          <Key>
+            <PropertyRef Name="EducatorID" />
+          </Key>
+          <Property Name="EducatorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nume" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Prenume" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Parola" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NumarTel" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Activitate" Relationship="Self.FK__Activitat__Educa__3E52440B" FromRole="Educator" ToRole="Activitate" />
+          <NavigationProperty Name="Copil" Relationship="Self.FK__Copil__EducatorI__3B75D760" FromRole="Educator" ToRole="Copil" />
+        </EntityType>
+        <EntityType Name="Parinte">
+          <Key>
+            <PropertyRef Name="ParinteID" />
+          </Key>
+          <Property Name="ParinteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nume" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Prenume" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Parola" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NumarTel" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Copil" Relationship="Self.CopilParinte" FromRole="Parinte" ToRole="Copil" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK__Activitat__Educa__3E52440B">
+          <End Role="Educator" Type="Self.Educator" Multiplicity="1" />
+          <End Role="Activitate" Type="Self.Activitate" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__CopilActi__Activ__46E78A0C">
+          <End Role="Activitate" Type="Self.Activitate" Multiplicity="1" />
+          <End Role="CopilActivitate" Type="Self.CopilActivitate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Activitate">
+              <PropertyRef Name="ActivitateID" />
+            </Principal>
+            <Dependent Role="CopilActivitate">
+              <PropertyRef Name="ActivitateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Copil__EducatorI__3B75D760">
+          <End Role="Educator" Type="Self.Educator" Multiplicity="1" />
+          <End Role="Copil" Type="Self.Copil" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__CopilActi__Copil__45F365D3">
+          <End Role="Copil" Type="Self.Copil" Multiplicity="1" />
+          <End Role="CopilActivitate" Type="Self.CopilActivitate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Copil">
+              <PropertyRef Name="CopilID" />
+            </Principal>
+            <Dependent Role="CopilActivitate">
+              <PropertyRef Name="CopilID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CopilParinte">
+          <End Role="Copil" Type="Self.Copil" Multiplicity="*" />
+          <End Role="Parinte" Type="Self.Parinte" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="TabaraDeVaraEntities3" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Activitate" EntityType="Self.Activitate" />
+          <EntitySet Name="Copil" EntityType="Self.Copil" />
+          <EntitySet Name="CopilActivitate" EntityType="Self.CopilActivitate" />
+          <EntitySet Name="Educator" EntityType="Self.Educator" />
+          <EntitySet Name="Parinte" EntityType="Self.Parinte" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK__Activitat__Educa__3E52440B" Association="Self.FK__Activitat__Educa__3E52440B">
+            <End Role="Educator" EntitySet="Educator" />
+            <End Role="Activitate" EntitySet="Activitate" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CopilActi__Activ__46E78A0C" Association="Self.FK__CopilActi__Activ__46E78A0C">
+            <End Role="Activitate" EntitySet="Activitate" />
+            <End Role="CopilActivitate" EntitySet="CopilActivitate" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Copil__EducatorI__3B75D760" Association="Self.FK__Copil__EducatorI__3B75D760">
+            <End Role="Educator" EntitySet="Educator" />
+            <End Role="Copil" EntitySet="Copil" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CopilActi__Copil__45F365D3" Association="Self.FK__CopilActi__Copil__45F365D3">
+            <End Role="Copil" EntitySet="Copil" />
+            <End Role="CopilActivitate" EntitySet="CopilActivitate" />
+          </AssociationSet>
+          <AssociationSet Name="CopilParinte" Association="Self.CopilParinte">
+            <End Role="Copil" EntitySet="Copil" />
+            <End Role="Parinte" EntitySet="Parinte" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TabaraDeVaraModelStoreContainer" CdmEntityContainer="TabaraDeVaraEntities3">
+          <EntitySetMapping Name="Activitate">
+            <EntityTypeMapping TypeName="TabaraDeVaraModel.Activitate">
+              <MappingFragment StoreEntitySet="Activitate">
+                <ScalarProperty Name="ActivitateID" ColumnName="ActivitateID" />
+                <ScalarProperty Name="Nume" ColumnName="Nume" />
+                <ScalarProperty Name="Descriere" ColumnName="Descriere" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="Ora" ColumnName="Ora" />
+                <ScalarProperty Name="Durata" ColumnName="Durata" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Copil">
+            <EntityTypeMapping TypeName="TabaraDeVaraModel.Copil">
+              <MappingFragment StoreEntitySet="Copil">
+                <ScalarProperty Name="CopilID" ColumnName="CopilID" />
+                <ScalarProperty Name="Nume" ColumnName="Nume" />
+                <ScalarProperty Name="Prenume" ColumnName="Prenume" />
+                <ScalarProperty Name="Varsta" ColumnName="Varsta" />
+                <ScalarProperty Name="Parola" ColumnName="Parola" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CopilActivitate">
+            <EntityTypeMapping TypeName="TabaraDeVaraModel.CopilActivitate">
+              <MappingFragment StoreEntitySet="CopilActivitate">
+                <ScalarProperty Name="CopilID" ColumnName="CopilID" />
+                <ScalarProperty Name="ActivitateID" ColumnName="ActivitateID" />
+                <ScalarProperty Name="Prezenta" ColumnName="Prezenta" />
+                <ScalarProperty Name="Observatii" ColumnName="Observatii" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Educator">
+            <EntityTypeMapping TypeName="TabaraDeVaraModel.Educator">
+              <MappingFragment StoreEntitySet="Educator">
+                <ScalarProperty Name="EducatorID" ColumnName="EducatorID" />
+                <ScalarProperty Name="Nume" ColumnName="Nume" />
+                <ScalarProperty Name="Prenume" ColumnName="Prenume" />
+                <ScalarProperty Name="Parola" ColumnName="Parola" />
+                <ScalarProperty Name="NumarTel" ColumnName="NumarTel" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Parinte">
+            <EntityTypeMapping TypeName="TabaraDeVaraModel.Parinte">
+              <MappingFragment StoreEntitySet="Parinte">
+                <ScalarProperty Name="ParinteID" ColumnName="ParinteID" />
+                <ScalarProperty Name="Nume" ColumnName="Nume" />
+                <ScalarProperty Name="Prenume" ColumnName="Prenume" />
+                <ScalarProperty Name="Parola" ColumnName="Parola" />
+                <ScalarProperty Name="NumarTel" ColumnName="NumarTel" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="TabaraDeVaraModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK__Activitat__Educa__3E52440B" TypeName="TabaraDeVaraModel.FK__Activitat__Educa__3E52440B" StoreEntitySet="Activitate">
+            <EndProperty Name="Educator">
+              <ScalarProperty Name="EducatorID" ColumnName="EducatorID" />
+            </EndProperty>
+            <EndProperty Name="Activitate">
+              <ScalarProperty Name="ActivitateID" ColumnName="ActivitateID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__Copil__EducatorI__3B75D760" TypeName="TabaraDeVaraModel.FK__Copil__EducatorI__3B75D760" StoreEntitySet="Copil">
+            <EndProperty Name="Educator">
+              <ScalarProperty Name="EducatorID" ColumnName="EducatorID" />
+            </EndProperty>
+            <EndProperty Name="Copil">
+              <ScalarProperty Name="CopilID" ColumnName="CopilID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="CopilParinte" TypeName="TabaraDeVaraModel.CopilParinte" StoreEntitySet="CopilParinte">
+            <EndProperty Name="Copil">
+              <ScalarProperty Name="CopilID" ColumnName="CopilID" />
+            </EndProperty>
+            <EndProperty Name="Parinte">
+              <ScalarProperty Name="ParinteID" ColumnName="ParinteID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

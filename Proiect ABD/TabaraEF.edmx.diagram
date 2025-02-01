@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d113602f3eff403897663877ec9d8fac" Name="Diagram1">
+        <EntityTypeShape EntityType="TabaraDeVaraModel.Activitate" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TabaraDeVaraModel.Copil" Width="1.5" PointX="3" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TabaraDeVaraModel.CopilActivitate" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="TabaraDeVaraModel.Educator" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TabaraDeVaraModel.Parinte" Width="1.5" PointX="7.5" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TabaraDeVaraModel.sysdiagrams" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="TabaraDeVaraModel.FK__Activitat__Educa__3E52440B" ManuallyRouted="false" />
+        <AssociationConnector Association="TabaraDeVaraModel.FK__CopilActi__Activ__46E78A0C" ManuallyRouted="false" />
+        <AssociationConnector Association="TabaraDeVaraModel.FK__Copil__EducatorI__3B75D760" ManuallyRouted="false" />
+        <AssociationConnector Association="TabaraDeVaraModel.FK__CopilActi__Copil__45F365D3" ManuallyRouted="false" />
+        <AssociationConnector Association="TabaraDeVaraModel.CopilParinte" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

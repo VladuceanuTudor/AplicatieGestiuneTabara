@@ -6,6 +6,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <!-- Added row for button -->
         </Grid.RowDefinitions>
 
         <!-- Header -->
@@ -36,6 +38,10 @@
                 </ItemsControl>
             </ScrollViewer>
         </Border>
+
+        <!-- Back to Main Window Button -->
+        <Button Grid.Row="2" Content="Back to Main Window" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20" Padding="10,5"
+                Click="BackToMainButton_Click"/>
     </Grid>
 
     <!-- Resources -->

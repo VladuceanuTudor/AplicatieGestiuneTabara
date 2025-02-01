@@ -94,7 +94,7 @@ namespace TabaraDeVaraApp.ViewModels
             Email = parinte.Email;
             NumarTel = parinte.NumarTel;
 
-            using (var db = new DataClasses1DataContext())
+            using (var db = new TabaraDeVaraEntities())
             {
                 var copii = db.CopilParintes
                     .Where(cp => cp.ParinteID == parinte.ParinteID)
@@ -110,7 +110,7 @@ namespace TabaraDeVaraApp.ViewModels
             
             if (SelectedCopil != null)
             {
-                using (var db = new DataClasses1DataContext())
+                using (var db = new TabaraDeVaraEntities())
                 {
                     var activitati = db.CopilActivitates
                         .Where(ca => ca.CopilID == SelectedCopil.CopilID)

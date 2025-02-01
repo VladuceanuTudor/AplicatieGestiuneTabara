@@ -47,6 +47,8 @@ namespace TabaraDeVaraApp.ViewModels
             set { _selectedCopilActivitati = value; OnPropertyChanged(); }
         }
 
+
+
         public CopilViewModel(Copil copil)
         {
 
@@ -57,7 +59,7 @@ namespace TabaraDeVaraApp.ViewModels
 
             //MessageBox.Show(_prenume);
             // Assuming _copilID is properly set somewhere before this logic is run
-            using (var db = new DataClasses1DataContext())
+            using (var db = new TabaraDeVaraEntities())
             {
                 var activitati = db.CopilActivitates
                     .Where(ca => ca.CopilID == _copilID)
